@@ -3,6 +3,16 @@
 ## Unreleased
 
 ### Added
+
+### Fixed
+
+### Changed
+
+### Breaking changes
+
+## 1.2.0
+
+### Added
 - Added comprehensive ARIA attributes and labels for screen reader accessibility in `dx-preview` component
 - Added `aria-modal="true"` attribute to dialog role in `dx-dialog` component
 - Added keyboard navigation tests for `dx-dialog` close button (Enter and Space keys)
@@ -31,8 +41,6 @@
 - Added `aria-colcount`, `aria-rowcount`, and `aria-busy` attributes to table element
 - Added `role="status"` and `aria-label` to loading container
 - Wrapped table header and body in `<thead>` and `<tbody>` elements for better semantic structure
-
-### Breaking changes
 
 ## 1.1.0
 
