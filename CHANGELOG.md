@@ -1,7 +1,6 @@
 # Changelog
 
 ## Unreleased
-- Fixed the badge icon position for the rtl.
 
 ### Added
 - Added comprehensive ARIA attributes and labels for screen reader accessibility in `dx-preview` component
@@ -21,6 +20,7 @@
 - Improved accessibility of `dx-breadcrumbs` component for screen readers
 - Improved accessibility of `dx-dialog` component for screen readers
 - Fix `dx-preview` component bug of previewing the same item will open the first index item in preview.
+- Fixed the badge icon position for the rtl.
 
 ### Changed
 - Changed `dx-preview` backdrop to use `role="presentation"` for better screen reader experience
