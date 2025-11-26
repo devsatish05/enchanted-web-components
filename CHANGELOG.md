@@ -5,8 +5,15 @@
 ### Added
 
 ### Fixed
+- Refactored `dx-dialog` component to use reactive state properties (`@state()`) for ARIA attributes instead of direct DOM manipulation, improving maintainability and alignment with Lit's reactive programming model
+- Fixed `dx-dialog` test for auto-focus behavior to properly check dialog element focus state
+- Fixed `dx-breadcrumbs` component list styling by adding `list-style-type: none` to ensure proper rendering
+- Fixed the icon bug for sorting of `dx-data-grid`.
+- Fixed the style bug for filter button in `dx-toggle-button`.
 
 ### Changed
+- Changed `dx-dialog` accessibility implementation to use Lit reactive state for `role`, `aria-label`, `tabindex`, and content visibility management
+- Updated `dx-dialog` live region to be part of the template instead of dynamically created
 
 ### Breaking changes
 
@@ -43,6 +50,7 @@
 - Added `role="status"` and `aria-label` to loading container
 - Wrapped table header and body in `<thead>` and `<tbody>` elements for better semantic structure
 - Refactored menu placement logic using a switch statment for clarity and maintainability.
+- Using debug instead of console as logging framework. `export DEBUG=enchanted-web-components:*` is enabling the specific debug messages
 
 ## 1.1.0
 

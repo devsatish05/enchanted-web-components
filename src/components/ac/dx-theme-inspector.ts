@@ -15,6 +15,7 @@
 // External imports
 import { customElement, state } from 'lit/decorators.js';
 import { css, html, TemplateResult } from 'lit';
+import createDebug from 'debug';
 
 // Component imports
 import { DxAcBaseElement } from './dx-ac-base-element';
@@ -22,6 +23,8 @@ import { DxAcBaseElement } from './dx-ac-base-element';
 // Helper imports
 import  * as theme from '../../utils/themeUtils';
 import { ThemeType } from '../../utils/themeUtils';
+
+const debug = createDebug('enchanted-web-components:components:ac:dx-theme-inspector.ts');
 
 @customElement('dx-theme-inspector')
 export class DxThemeInspector extends DxAcBaseElement {
@@ -138,16 +141,12 @@ export class DxThemeInspector extends DxAcBaseElement {
     } = {};
     const templateResultArr: Array<TemplateResult> = [];
 
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(this._theme);
+    debug('Rendering themes for mode: %s', modeToRender);
     for (const key in this._theme) {
       const value = this._theme[key];
       if (key.startsWith(this._themePrefix)) {
         const [ , mode, type, property ] = key.split(this._themePropertiesDelimiter);
-        // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-        // eslint-disable-next-line no-console
-        console.debug(mode, type, property, value);
+        debug('mode: %s, type: %s, property: %s, value: %s', mode, type, property, value);
         if (mode === modeToRender) {
           if (!alreadyAdded.includes(type)) {
             alreadyAdded.push(type);

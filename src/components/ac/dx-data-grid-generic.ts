@@ -16,6 +16,7 @@
 import { html, nothing } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import createDebug from 'debug';
 
 // Component imports
 import { DxAcBaseElement } from './dx-ac-base-element';
@@ -45,6 +46,8 @@ import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/arrow--up';
 import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/arrow--down';
 import '@hcl-software/enchanted-icons-web-component/dist/apps/es/items--search--empty';
 import '@hcl-software/enchanted-icons-web-component/dist/apps/es/items--search--initial';
+
+const debug = createDebug('enchanted-web-components:components:ac:dx-data-grid-generic.ts');
 
 @customElement('dx-data-grid-generic')
 export class DxDataGridGeneric extends DxAcBaseElement {
@@ -1193,9 +1196,7 @@ export class DxDataGridGeneric extends DxAcBaseElement {
           </div>
         `;
       } else if (this.hasMiddlewareError === 'true') {
-        // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-        // eslint-disable-next-line no-console
-        console.warn(`${this.getMessage('output.message.no.engine.found')}, ${this.getMessage('output.message.contact.admin')}`);
+        debug('%s, %s', this.getMessage('output.message.no.engine.found'), this.getMessage('output.message.contact.admin'));
         return html`
           <div part="${DATA_GRID_PARTS.TABLE_BODY_CONTAINER}">
             <icon-items-search-empty size="128" color="rgba(0, 0, 0, 0.38)"></icon-items-search-empty>
@@ -1206,9 +1207,7 @@ export class DxDataGridGeneric extends DxAcBaseElement {
           </div>
         `;
       } else if (this.hasContentSourceAvailable === 'true') {
-        // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-        // eslint-disable-next-line no-console
-        console.warn(`${this.getMessage('output.message.no.content.sources.found')}, ${this.getMessage('output.message.contact.admin')}`);
+        debug('%s, %s', this.getMessage('output.message.no.content.sources.found'), this.getMessage('output.message.contact.admin'));
         return html`
           <div part="${DATA_GRID_PARTS.TABLE_BODY_CONTAINER}"> 
             <icon-items-search-empty size="128" color="rgba(0, 0, 0, 0.38)"></icon-items-search-empty>

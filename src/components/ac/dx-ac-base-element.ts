@@ -17,10 +17,13 @@ import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { localized } from '@lit/localize';
 import { v4 as uuid } from 'uuid';
+import createDebug from 'debug';
 
 // Helper imports
 import { Replacement } from '../localization';
 import { SHADOW_ROOT_MODE_KEY } from '../constants';
+
+const debug = createDebug('enchanted-web-components:components:ac:dx-ac-base-element.ts');
 
 /**
  * Base class for all AC components.
@@ -57,13 +60,9 @@ export class DxAcBaseElement extends LitElement {
     // eslint-disable-next-line no-undef
     const mode: ShadowRootMode = flag === 'true' ? 'open' : 'closed';
     if (flag === 'true') {
-      // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-      // eslint-disable-next-line no-console
-      console.info(`Open shadowRoot is ENABLED for all AC components! (key=${key})`);
+      debug('Open shadowRoot is ENABLED for all AC components! (key=%s)', key);
     } else {
-      // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-      // eslint-disable-next-line no-console
-      console.info(`Open shadowRoot is DISABLED for all AC components! (key=${key})`);
+      debug('Open shadowRoot is DISABLED for all AC components! (key=%s)', key);
     }
     return mode;
   }
@@ -127,15 +126,11 @@ export class DxAcBaseElement extends LitElement {
   constructor() {
     super();
     this.id = uuid();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`${this.tagName} [${this.id}] is connected to the DOM!`);
+    debug('%s [%s] is connected to the DOM!', this.tagName, this.id);
   }
 
   disconnectedCallback(): void {
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`${this.tagName} [${this.id}] is disconnected from the DOM!`);
+    debug('%s [%s] is disconnected from the DOM!', this.tagName, this.id);
     super.disconnectedCallback();
   }
 
@@ -158,9 +153,7 @@ export class DxAcBaseElement extends LitElement {
       }
     }
 
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.warn(`The templateKey '${templateKey}' is not provided by the 'localization' property for the '${this.nodeName}' component!`);
+    debug('The templateKey %s is not provided by the localization property for the %s component!', templateKey, this.nodeName);
     return templateKey;
   }
 }

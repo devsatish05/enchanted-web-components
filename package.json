@@ -76,7 +76,9 @@
   },
   "dependencies": {
     "@hcl-software/enchanted-icons-web-component": "^1.7.2",
-    "dayjs": "^1.11.13"
+    "@types/debug": "^4.1.12",
+    "dayjs": "^1.11.13",
+    "debug": "^4.4.3"
   },
   "engines": {
     "node": ">=20.X"

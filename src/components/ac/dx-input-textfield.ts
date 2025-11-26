@@ -17,6 +17,7 @@ import { html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { localized } from '@lit/localize';
 import { debounce } from 'lodash';
+import createDebug from 'debug';
 
 // Component imports
 import { DxAcBaseElement } from './dx-ac-base-element';
@@ -31,6 +32,8 @@ import { AutoCompleteTextfieldEnum } from '../../types/dx-input-textfield';
 // Icon imports
 import './dx-svg-icon';
 import { KeyboardInputKeys } from '../../utils/keyboardEventKeys';
+
+const debug = createDebug('enchanted-web-components:components:ac:dx-input-textfield.ts');
 
 /**
  * Textfield component.
@@ -91,9 +94,7 @@ export class DxInputTextfield extends DxAcBaseElement {
 
   private handleInput(event: KeyboardEvent) {
     event.stopPropagation();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Input event in ${this.tagName}: ${(event.target as HTMLInputElement).value}`);
+    debug('Input event in %s: %s', this.tagName, (event.target as HTMLInputElement).value);
     // this condition used to copy the current working search value to tempValueHolder
     // used to save value when user starts to edit queryString but later leaves it empty (handleBlur event)
     if (this.value !== this.tempValueHolder && this.tempValueHolder === '' && this.hassearchedbefore) {
@@ -115,9 +116,7 @@ export class DxInputTextfield extends DxAcBaseElement {
 
   private handleEnter(event: KeyboardEvent) {
     event.stopPropagation();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Enter event in ${this.tagName}: ${this.value}`);
+    debug('Enter event in %s: %s', this.tagName, this.value);
     if (event.key === KeyboardInputKeys.ENTER) {
       const stateChange = new CustomEvent('change', { 
         detail: {
@@ -135,9 +134,7 @@ export class DxInputTextfield extends DxAcBaseElement {
   private handleClear(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Clear event in ${this.tagName}: ${this.value}`);
+    debug('Clear event in %s: %s', this.tagName, this.value);
     // this condition used to copy the current search value to tempValueHolder
     if (this.value !== this.tempValueHolder && this.tempValueHolder === '' && this.hassearchedbefore) {
       // string interpolation used to prevent flicker on the input
@@ -158,9 +155,7 @@ export class DxInputTextfield extends DxAcBaseElement {
 
   private handleClearEnter(event: KeyboardEvent) {
     event.stopPropagation();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Clear Enter event in ${this.tagName}: ${this.value}`);
+    debug('Clear Enter event in %s: %s', this.tagName, this.value);
     if (event.key === KeyboardInputKeys.ENTER || event.key === KeyboardInputKeys.SPACE) {
       this.handleClear(event as unknown as MouseEvent);
     }
@@ -169,9 +164,7 @@ export class DxInputTextfield extends DxAcBaseElement {
   private handleBlur(event: FocusEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Blur event in ${this.tagName}: ${this.value}`);
+    debug('Blur event in %s: %s', this.tagName, this.value);
     // if the input is empty or the clear icon is clicked, but user blurred away, then the value will be set back to tempValueHolder
     if (this.value === '') {
       this.value = this.tempValueHolder;
@@ -188,9 +181,7 @@ export class DxInputTextfield extends DxAcBaseElement {
 
   private handleEnterSearch(event: KeyboardEvent) {
     event.stopPropagation();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Search by Enter Key event in ${this.tagName}: ${this.value}`);
+    debug('Search by Enter Key event in %s: %s', this.tagName, this.value);
     if (event.key === KeyboardInputKeys.ENTER) {
       event.stopPropagation();
       this.handleSearch(event as unknown as MouseEvent);
@@ -200,9 +191,7 @@ export class DxInputTextfield extends DxAcBaseElement {
   private handleSearch(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Search by Mouse Click event in ${this.tagName}: ${this.value}`);
+    debug('Search by Mouse Click event in %s: %s', this.tagName, this.value);
     const stateChange = new CustomEvent('change', {
       detail: {
         value: this.value,
@@ -218,9 +207,7 @@ export class DxInputTextfield extends DxAcBaseElement {
   private handleFocus(event: FocusEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Focus event in ${this.tagName}: ${this.value}`);
+    debug('Focus event in %s: %s', this.tagName, this.value);
     // this condition used to copy the current search value to tempValueHolder
     if (this.value !== this.tempValueHolder && this.tempValueHolder === '' && this.hassearchedbefore) {
       // string interpolation used to prevent flicker on the input
@@ -263,9 +250,7 @@ export class DxInputTextfield extends DxAcBaseElement {
   }
 
   render() {
-    // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-    // eslint-disable-next-line no-console
-    console.debug(`Rendering ${this.tagName}: value - ${this.value}, disabled - ${this.disabled}, has searched before - ${this.hassearchedbefore}`);
+    debug('Rendering %s: value - %s, disabled - %s, has searched before - %s', this.tagName, this.value, this.disabled, this.hassearchedbefore);
     return html`
       <div part="div">
         ${this.label

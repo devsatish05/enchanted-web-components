@@ -13,7 +13,11 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
+import createDebug from 'debug';
+
 import themeMap from '../styles/enchanted/common/themeMap.module.scss';
+
+const debug = createDebug('enchanted-web-components:utils:themeUtils.ts');
 
 export const {
   palettenoShadow,
@@ -311,9 +315,7 @@ export const {
   themeZZZdarkZZZactionZZZfocusInverse,
 } = themeMap;
 
-// eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-// eslint-disable-next-line no-console
-console.debug(JSON.stringify(themeMap));
+debug('themeMap: %O', themeMap);
 type Keys = keyof typeof themeMap;
 type Values = typeof themeMap[Keys];
 export type ThemeType = { [key: Keys]: Values };

@@ -18,6 +18,7 @@ import { html, LitElement, nothing } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import createDebug from 'debug';
 
 // Component imports
 import { DxAcBaseElement } from './dx-ac-base-element';
@@ -44,12 +45,14 @@ import { TOOLTIP_PLACEMENT } from '../../types/cssClassEnums';
 import '@hcl-software/enchanted-icons-web-component/dist/apps/es/items--search--empty';
 import '@hcl-software/enchanted-icons-web-component/dist/apps/es/items--search--initial';
 
-import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/chevron--sort--up';
-import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/chevron--sort--down';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/arrow--up';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/arrow--down';
 import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/edit';
 import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/overflow-menu--horizontal';
 
 import { KeyboardInputKeys } from '../../utils/keyboardEventKeys';
+
+const debug = createDebug('enchanted-web-components:components:ac:dx-data-grid.ts');
 
 @customElement('dx-data-grid')
 export class DxDataGrid extends DxAcBaseElement {
@@ -764,7 +767,7 @@ export class DxDataGrid extends DxAcBaseElement {
 								<div part="${DATA_GRID_PARTS.TABLE_SORT_BUTTON_CONTAINER}">
 									<dx-icon-button
 										data-testid="dx-data-grid-sort-button-${SortOrder.ASC}-${index}"
-										.icon="${html`<icon-chevron-sort-up></icon-chevron-sort-up>`}"
+										.icon="${html`<icon-arrow-up></icon-arrow-up>`}"
 										id="dx-data-grid-sort-button-${SortOrder.ASC}-${index}"
 										tabindex=0
 										part="${this.getPartHeaderSort(sortHeaderField, SortOrder.ASC)} ${DATA_GRID_PARTS.TABLE_HEADER_ICON_BUTTON}"
@@ -777,7 +780,7 @@ export class DxDataGrid extends DxAcBaseElement {
 									</dx-icon-button>
 									<dx-icon-button
 										data-testid="dx-data-grid-sort-button-${SortOrder.DESC}-${index}"
-										.icon="${html`<icon-chevron-sort-down></icon-chevron-sort-down>`}"
+										.icon="${html`<icon-arrow-down></icon-arrow-down>`}"
 										tabindex=0
 										id="dx-data-grid-sort-button-${SortOrder.DESC}-${index}"
 										part="${this.getPartHeaderSort(sortHeaderField, SortOrder.DESC)} ${DATA_GRID_PARTS.TABLE_HEADER_ICON_BUTTON}"
@@ -1020,9 +1023,7 @@ export class DxDataGrid extends DxAcBaseElement {
 					</div>
 				`;
 	    } else if (this.hasMiddlewareError === 'true') {
-			  // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-      	// eslint-disable-next-line no-console
-			  console.warn(`${this.getMessage('output.message.no.engine.found')}, ${this.getMessage('output.message.contact.admin')}`);
+		  debug('%s, %s', this.getMessage('output.message.no.engine.found'), this.getMessage('output.message.contact.admin'));
 	      return html`
 					<div part="${DATA_GRID_PARTS.TABLE_BODY_CONTAINER}">
 						<icon-items-search-empty size="128" color="rgba(0, 0, 0, 0.38)"></icon-items-search-empty>
@@ -1033,9 +1034,7 @@ export class DxDataGrid extends DxAcBaseElement {
 					</div>
 				`;
 	    } else if (this.hasContentSourceAvailable === 'true') {
-			  // eslint-why - Enchanted-logger could not be used, later we should switch to the debug package
-			  // eslint-disable-next-line no-console
-			  console.warn(`${this.getMessage('output.message.no.content.sources.found')}, ${this.getMessage('output.message.contact.admin')}`);
+		  debug('%s, %s', this.getMessage('output.message.no.content.sources.found'), this.getMessage('output.message.contact.admin'));
 	      return html`
 					<div part="${DATA_GRID_PARTS.TABLE_BODY_CONTAINER}"> 
 						<icon-items-search-empty size="128" color="rgba(0, 0, 0, 0.38)"></icon-items-search-empty>

@@ -25,7 +25,7 @@ import './dx-icon-button';
 
 // Helper imports
 import { ICON_BUTTON_SIZES, TOGGLE_BUTTON_PARTS } from '../../types/cssClassEnums';
-// import { ICON_BUTTON_EXPORT_PARTS } from '../exportParts';
+import { ICON_BUTTON_EXPORT_PARTS } from '../exportParts';
 
 @customElement('dx-toggle-button')
 export class DxToggleButton extends DxAcBaseElement {
@@ -138,6 +138,7 @@ export class DxToggleButton extends DxAcBaseElement {
           size=${ICON_BUTTON_SIZES.MEDIUM}
           .icon=${html `${this.icon}`}
           data-testid="dx-toggle-single-button"
+          exportparts="${ICON_BUTTON_EXPORT_PARTS}"
         >
         </dx-icon-button>
         `
