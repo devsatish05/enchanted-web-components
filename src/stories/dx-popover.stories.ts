@@ -35,9 +35,8 @@ const meta: Meta = {
     showCloseIcon: { control: 'boolean', description: 'Show close button inside popover' },
 
     inverse: {
-      control: { type: 'radio' },
-      options: ['light', 'dark'],
-      description: 'Sets the popover color scheme',
+      control: 'boolean',
+      description: 'Sets the popover to dark theme when true',
     },
 
     arrow: {
@@ -83,7 +82,7 @@ const meta: Meta = {
     showLabel: false,
     showText: false,
     showCloseIcon: false,
-    inverse: 'light',
+    inverse: false,
     arrow: undefined,
     withpadding: false,
     disableHover: false,
@@ -109,7 +108,7 @@ type Story = StoryObj<{
   showLabel: boolean;
   showText: boolean;
   showCloseIcon: boolean;
-  inverse: 'light';
+  inverse: boolean;
   arrow: DxPopoverArrowPosition | undefined;
   withpadding: boolean;
   disableHover: boolean;
@@ -123,16 +122,16 @@ export const DxPopoverStory: Story = {
     return html`
     <dx-popover
       ?open=${args.open}
-      .label=${args.label}
-      .text=${args.text}
+      label=${args.label}
+      text=${args.text}
       ?showLabel=${args.showLabel}
       ?showText=${args.showText}
       ?showCloseIcon=${args.showCloseIcon}
-      .inverse=${args.inverse}
-      .arrow=${args.arrow}
+      ?inverse=${args.inverse}
+      arrow=${args.arrow}
       ?withpadding=${args.withpadding}
       ?disableHover=${args.disableHover}
-      style="position: absolute; margin-left: 10%;"
+      style="position: absolute; margin: 20%;"
     >
       <dx-button slot="target" buttontext="${args.buttontext}"></dx-button>
     </dx-popover>

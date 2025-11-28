@@ -38,7 +38,7 @@ export class DxPopover extends DxAcBaseElement {
 
   @property({ type: Boolean }) showCloseIcon = false;
 
-  @property({ type: String }) theme: 'light' | 'dark' = 'light';
+  @property({ type: Boolean, reflect: true }) inverse = false;
 
   @property({ type: String, reflect: true }) arrow?: DxPopoverArrowPosition;
 
@@ -75,7 +75,7 @@ export class DxPopover extends DxAcBaseElement {
         @pointerleave=${this._hidePopover}
       ></slot>
     </div>
-    <div part="${POPOVER_PARTS.POPOVER_WRAPPER}" theme=${this.theme} aria-label=${this.label}>
+    <div part="${POPOVER_PARTS.POPOVER_WRAPPER}" ?inverse=${this.inverse} aria-label=${this.label}>
       ${this.arrow ? html`
       <div part="${POPOVER_PARTS.POPOVER_ARROW}"></div>`: nothing}
         <div part=${this.isLTR ? POPOVER_PARTS.POPOVER_CONTAINER : POPOVER_PARTS.POPOVER_CONTAINER_RTL}>
