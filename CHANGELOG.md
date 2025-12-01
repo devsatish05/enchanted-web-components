@@ -5,6 +5,7 @@
 ### Added
 - Added a new storybook component for `dx-popover`.
 - Added new property for disabling popover on hover in `dx-popover`.
+- Prevent dropdown closing when dragging scrollbar inside `<dx-input-select>`.
 
 ### Fixed
 - Fixed the disabled state bug of `dx-icon-button`.
