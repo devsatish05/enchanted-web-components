@@ -146,7 +146,7 @@ const meta: Meta<DxMultipleSelectChipProps> = {
     showRemoveLabel: false,
     emptyOptions: false,
     clearIcon: true,
-    customWidth: '240',
+    customWidth: '',
     name: 'multiple-select',
     field: '',
   },
