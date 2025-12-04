@@ -79,6 +79,7 @@
     border: 0px;
     vertical-align: top;
     width: 100%;
+    top: -2px;
   }
 
   &::part(#{$part-datepicker-div-label-and-action}) {
