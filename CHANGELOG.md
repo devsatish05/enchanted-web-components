@@ -21,6 +21,7 @@
 - Adjust `dx-snackbar` stylings
 
 ### Breaking changes
+- Change `dx-data-grid-generic` interface propertie types (isLoading, hasMiddlewareError, hasContentSourceAvailable, checkboxSelection)
 
 ## 1.4.0
 
