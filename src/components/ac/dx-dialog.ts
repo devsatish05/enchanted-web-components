@@ -193,6 +193,8 @@ export class DxDialog extends DxAcBaseElement {
     switch (this.size) {
       case DialogSizes.XL:
         return DIALOG_PARTS.CONTAINER_XL;
+      case DialogSizes.XS:
+        return DIALOG_PARTS.CONTAINER_XS;
       case DialogSizes.SM:
         return DIALOG_PARTS.CONTAINER_SM;
       case DialogSizes.MD:
@@ -210,6 +212,8 @@ export class DxDialog extends DxAcBaseElement {
     switch (this.size) {
       case DialogSizes.XL:
         return DIALOG_PARTS.PAPER_XL;
+      case DialogSizes.XS:
+        return DIALOG_PARTS.PAPER_XS;
       case DialogSizes.SM:
         return DIALOG_PARTS.PAPER_SM;
       case DialogSizes.MD:
@@ -230,6 +234,8 @@ export class DxDialog extends DxAcBaseElement {
           return DIALOG_PARTS.CONTENT_XL_NO_BORDER;
         }
         return DIALOG_PARTS.CONTENT_XL;
+      case DialogSizes.XS:
+        return DIALOG_PARTS.CONTENT_XS;
       case DialogSizes.SM:
         return DIALOG_PARTS.CONTENT_SM;
       case DialogSizes.MD:
@@ -245,6 +251,8 @@ export class DxDialog extends DxAcBaseElement {
 
   private getPaginationPart(): string {
     switch (this.size) {
+      case DialogSizes.XS:
+        return DIALOG_PARTS.PAGINATION_XS;
       case DialogSizes.SM:
         return DIALOG_PARTS.PAGINATION_SM;
       case DialogSizes.MD:
