@@ -3,15 +3,39 @@
 ## Unreleased
 
 ### Added
-- Added new `placement` and `size` property for `dx-menu` component.
+- Add `dx-data-grid-generic` storybook story
+- Add `icon` property to the `dx-chip` component
+- Added a new storybook for the theme inspector and also added some new color tokens.
 
 ### Fixed
-- Fixed `dx-preview` image zoom functionality to enable scrolling on all sides when zoomed beyond 100%.
+- Fix `dx-preview` image zoom functionality to enable scrolling on all sides when zoomed beyond 100%.
+- Fix the `XS` size of the `dx-dialog` component
+- Fix the `disabled` state for the `dx-header` component
+
+### Changed
+- Check and rework all storybook stories
+- Adjust `dx-chip` stylings
+- Adjust `dx-datepicker` stylings
+- Adjust `dx-input-select` stylings
+- Adjust `dx-input-textfield` stylings
+- Adjust `dx-multiple-select-chip` stylings
+- Adjust `dx-snackbar` stylings
+
+### Breaking changes
+- Remove unused `error` property from the `dx-multiple-select-chip` component
+- Remove unused `color` property from the `dx-header` component
+- Change `dx-data-grid-generic` interface propertie types (isLoading, hasMiddlewareError, hasContentSourceAvailable, checkboxSelection)
+- Remove `dx-search-center-layout` component
+- Remove the `ignoreDisable` property from the `dx-input-textfield` component
+- Remove useless `open` property from `dx-menu` component
+
+## 1.4.0
+
+### Added
+- Added new `placement` and `size` property for `dx-menu` component.
 
 ### Changed
 - Refactored menu placement logic using a switch statement for clarity and maintainability.
-
-### Breaking changes
 
 ## 1.3.0
 
