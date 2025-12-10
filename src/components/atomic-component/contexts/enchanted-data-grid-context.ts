@@ -29,5 +29,5 @@ export type EnchantedDataGridContextType = {
   selectedSearchItems?: any[];
 };
 
-export const dxDataGridContext = createContext<EnchantedDataGridContextType>(Symbol('enchanted-data-grid-context'));
-export default dxDataGridContext;
+export const enchantedDataGridContext = createContext<EnchantedDataGridContextType>(Symbol('enchanted-data-grid-context'));
+export default enchantedDataGridContext;

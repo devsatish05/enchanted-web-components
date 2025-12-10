@@ -22,9 +22,9 @@ All web components have been renamed from `dx-*` prefix to `enchanted-*` prefix:
 
 | **Old Name (dx-)** | **New Name (enchanted-)** |
 |-------------------|---------------------------|
+| dx-ac-base-element | enchanted-ac-base-element |
 | dx-accordion | enchanted-accordion |
 | dx-accordion-summary | enchanted-accordion-summary |
-| dx-ac-base-element | enchanted-ac-base-element |
 | dx-alert | enchanted-alert |
 | dx-anchor | enchanted-link |
 | dx-avatar | enchanted-avatar |
@@ -36,7 +36,6 @@ All web components have been renamed from `dx-*` prefix to `enchanted-*` prefix:
 | dx-circular-progress | enchanted-circular-progress |
 | dx-data-grid | enchanted-data-grid |
 | dx-data-grid-generic | enchanted-data-grid-generic |
-| dx-data-grid-context | enchanted-data-grid-context |
 | dx-datepicker | enchanted-datepicker |
 | dx-dialog | enchanted-dialog |
 | dx-header | enchanted-header |
@@ -61,8 +60,6 @@ All web components have been renamed from `dx-*` prefix to `enchanted-*` prefix:
 | dx-theme-inspector | enchanted-theme-inspector |
 | dx-toggle-button | enchanted-toggle-button |
 | dx-tooltip | enchanted-tooltip |
-
-**Total:** 39 components renamed
 
 ## 1.4.0
 
