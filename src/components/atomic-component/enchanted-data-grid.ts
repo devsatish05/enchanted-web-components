@@ -36,7 +36,7 @@ import { getMenuItemCount, getObjectValue, getOverflowItemProperty, getActionLin
 import { isLTR, getFormattedString } from '../localization';
 import { LIST_ITEM_PARTS, LIST_PARTS, MENU_ITEM_PARTS, MENU_PARTS, DATA_GRID_PARTS } from '../../types/cssClassEnums';
 import { ICON_BUTTON_EXPORT_PARTS, ITEM_TYPE_AVATAR_EXPORT_PARTS } from '../exportParts';
-import { dxDataGridContext, EnchantedDataGridContextType } from './contexts/enchanted-data-grid-context';
+import { enchantedDataGridContext, EnchantedDataGridContextType } from './contexts/enchanted-data-grid-context';
 import { EnchantedInputFieldType } from '../../types/enchanted-select';
 import { TOOLTIP_EXPORT_PARTS } from '../exportParts';
 import { TOOLTIP_PLACEMENT } from '../../types/cssClassEnums';
@@ -69,9 +69,9 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	@state()
 	private onRowHover: boolean = false;
 
-	@consume({ context: dxDataGridContext, subscribe: true })
+	@consume({ context: enchantedDataGridContext, subscribe: true })
 	@state()
-	public dxDataGridContext?: EnchantedDataGridContextType;
+	public enchantedDataGridContext?: EnchantedDataGridContextType;
 
 	@property({ type: String })
 	colDef = '';
@@ -194,28 +194,28 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 
 	getPartHeaderSort(headerField: string, sortDirection: SortOrder) {
 	  if (sortDirection === SortOrder.ASC) {
-	    if (this.dxDataGridContext?.sortDirection === SortOrder.DESC && this.dxDataGridContext?.sortAttribute === headerField) {
+	    if (this.enchantedDataGridContext?.sortDirection === SortOrder.DESC && this.enchantedDataGridContext?.sortAttribute === headerField) {
 	      return DATA_GRID_PARTS.TABLE_HEADER_ASC_SORT_BUTTON_HIDDEN;
 	    }
 	    if (this.onHover && headerField === this.currentHoverField || (
-	      this.dxDataGridContext?.sortAttribute === headerField
-				&& this.dxDataGridContext?.sortDirection === SortOrder.ASC)
+	      this.enchantedDataGridContext?.sortAttribute === headerField
+				&& this.enchantedDataGridContext?.sortDirection === SortOrder.ASC)
 	    ) {
 	      return DATA_GRID_PARTS.TABLE_HEADER_SORT_BUTTON;
 	    }
 	    return DATA_GRID_PARTS.TABLE_HEADER_ASC_SORT_BUTTON_HIDDEN;
 	  }
 	  if (sortDirection === SortOrder.DESC) {
-	    if (this.dxDataGridContext?.sortDirection === SortOrder.ASC
-				|| this.dxDataGridContext?.sortDirection === undefined
-				|| (this.dxDataGridContext?.sortAttribute !== headerField
-					&& this.dxDataGridContext?.sortDirection === SortOrder.DESC)
+	    if (this.enchantedDataGridContext?.sortDirection === SortOrder.ASC
+				|| this.enchantedDataGridContext?.sortDirection === undefined
+				|| (this.enchantedDataGridContext?.sortAttribute !== headerField
+					&& this.enchantedDataGridContext?.sortDirection === SortOrder.DESC)
 	    ) {
 	      return DATA_GRID_PARTS.TABLE_HEADER_DESC_SORT_BUTTON_HIDDEN;
 	    }
-	    if ((this.onHover && headerField === this.currentHoverField && this.dxDataGridContext?.sortDirection)
-				|| (this.dxDataGridContext?.sortAttribute === headerField
-					&& this.dxDataGridContext?.sortDirection === SortOrder.DESC)
+	    if ((this.onHover && headerField === this.currentHoverField && this.enchantedDataGridContext?.sortDirection)
+				|| (this.enchantedDataGridContext?.sortAttribute === headerField
+					&& this.enchantedDataGridContext?.sortDirection === SortOrder.DESC)
 	    ) {
 	      return DATA_GRID_PARTS.TABLE_HEADER_SORT_BUTTON;
 	    }
@@ -227,8 +227,8 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  evt.stopPropagation();
 	  evt.preventDefault();
 	  let sortDirection = sort;
-	  if (this.dxDataGridContext?.sortAttribute === field &&
-			this.dxDataGridContext?.sortDirection === SortOrder.ASC) {
+	  if (this.enchantedDataGridContext?.sortAttribute === field &&
+			this.enchantedDataGridContext?.sortDirection === SortOrder.ASC) {
 	    sortDirection = SortOrder.DESC;
 	  } else {
 	    sortDirection = SortOrder.ASC;
@@ -248,7 +248,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  evt.preventDefault();
 	  this.dispatchEvent(new CustomEvent('change', {
 	    detail: {
-	      value: this.dxDataGridContext?.searchItems && this.dxDataGridContext?.searchItems[index],
+	      value: this.enchantedDataGridContext?.searchItems && this.enchantedDataGridContext?.searchItems[index],
 	      type: EnchantedInputFieldType.SELECTION
 	    }
 	  }));
@@ -271,10 +271,10 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	// this cannot be tested stand alone need authoring to use this.
 	/* istanbul ignore next */
 	isItemSelected(index: number): boolean {
-	  if (this.dxDataGridContext?.selectedSearchItems && this.dxDataGridContext?.searchItems) {
-	    return this.dxDataGridContext?.selectedSearchItems.some(selectedId => {
-	      if (this.dxDataGridContext?.searchItems && this.dxDataGridContext?.searchItems[index]) {
-	        return selectedId._id === this.dxDataGridContext?.searchItems[index]?._id;
+	  if (this.enchantedDataGridContext?.selectedSearchItems && this.enchantedDataGridContext?.searchItems) {
+	    return this.enchantedDataGridContext?.selectedSearchItems.some(selectedId => {
+	      if (this.enchantedDataGridContext?.searchItems && this.enchantedDataGridContext?.searchItems[index]) {
+	        return selectedId._id === this.enchantedDataGridContext?.searchItems[index]?._id;
 	      }
 	      return false;
 	    });
@@ -286,8 +286,8 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	/* istanbul ignore next */
 	getPartRowCheckbox(index: number) {
 	  if (this.onRowHover && this.currentHoverRow === index ||
-			(this.dxDataGridContext?.selectedSearchItems && this.dxDataGridContext?.searchItems &&
-				this.dxDataGridContext?.selectedSearchItems.includes(this.dxDataGridContext?.searchItems[index]))
+			(this.enchantedDataGridContext?.selectedSearchItems && this.enchantedDataGridContext?.searchItems &&
+				this.enchantedDataGridContext?.selectedSearchItems.includes(this.enchantedDataGridContext?.searchItems[index]))
 			|| (this.isItemSelected(index))
 	  ) {
 	    return '';
@@ -354,7 +354,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  evt.stopPropagation();
 	  evt.preventDefault();
 	  const singleActionButton = evt.target as HTMLElement;
-	  const itemsLength = this.dxDataGridContext?.searchItems?.length;
+	  const itemsLength = this.enchantedDataGridContext?.searchItems?.length;
 	  const moveToEditIcon = isLTR() ? KeyboardInputKeys.ARROW_LEFT : KeyboardInputKeys.ARROW_RIGHT;
 	  if (evt.key === KeyboardInputKeys.ENTER) {
 	    singleActionButton.click();
@@ -443,7 +443,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  const moreMenuIcon = evt.target as HTMLElement;
 	  let menu = undefined;
 	  let visibility = '';
-	  const itemsLength = this.dxDataGridContext?.searchItems?.length;
+	  const itemsLength = this.enchantedDataGridContext?.searchItems?.length;
 	  const presentationMenu = (moreMenuIcon.parentElement?.parentElement as LitElement)?.renderRoot?.lastElementChild as HTMLElement;
 	  menu = presentationMenu.getAttribute('role') === 'presentation' ? presentationMenu.lastElementChild : undefined;
 	  const moveToEditIcon = isLTR() ? KeyboardInputKeys.ARROW_LEFT : KeyboardInputKeys.ARROW_RIGHT	;
@@ -597,7 +597,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  evt.stopPropagation();
 	  evt.preventDefault();
 	  const moveToEdit = isLTR() ? KeyboardInputKeys.ARROW_RIGHT : KeyboardInputKeys.ARROW_LEFT;
-	  const itemsLength = this.dxDataGridContext?.searchItems?.length;
+	  const itemsLength = this.enchantedDataGridContext?.searchItems?.length;
 	  if (evt.key === KeyboardInputKeys.ARROW_DOWN) {
 	    if (index + 1 === itemsLength) {
 	      this.dispatchEvent(new CustomEvent('change-focus', {
@@ -678,7 +678,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 
 	  // timeout is necessary to wait for icon to show first
 	  setTimeout(() => {
-	    if (this.dxDataGridContext?.sortDirection === SortOrder.DESC && this.dxDataGridContext?.sortAttribute === currentHoverField) {
+	    if (this.enchantedDataGridContext?.sortDirection === SortOrder.DESC && this.enchantedDataGridContext?.sortAttribute === currentHoverField) {
 	      const sortIcon = this.renderRoot.querySelector(`#enchanted-data-grid-sort-button-${SortOrder.DESC}-${index}`) as HTMLElement;
 	      sortIcon.setAttribute('autofocus', 'true');
 	      sortIcon?.focus();
@@ -725,8 +725,8 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 	  try {
 	    const columnsObj = JSON.parse(this.colDef) as EnchantedDataGridColDef[];
 	    const columnsObjLength = columnsObj.length;
-	    if (this.dxDataGridContext && this.dxDataGridContext?.searchItems
-				&& this.dxDataGridContext?.searchItems.length > 0
+	    if (this.enchantedDataGridContext && this.enchantedDataGridContext?.searchItems
+				&& this.enchantedDataGridContext?.searchItems.length > 0
 				&& this.isLoading === 'false') {
 	      return html`
 					<tr
@@ -854,9 +854,9 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 					</div>
 				`;
 	    }
-	    else if (this.dxDataGridContext && this.dxDataGridContext?.searchItems && this.dxDataGridContext?.searchItems.length > 0) {
+	    else if (this.enchantedDataGridContext && this.enchantedDataGridContext?.searchItems && this.enchantedDataGridContext?.searchItems.length > 0) {
 	      const tableBody = html`
-					${this.dxDataGridContext.searchItems.map((data: any, index: number) => {
+					${this.enchantedDataGridContext.searchItems.map((data: any, index: number) => {
 					const rowContent = columnsObj
 					  .map((header: EnchantedDataGridColDef) => { return getObjectValue(this.specialFields, data, header.field, header.keyForStringify); })
 					  .join(', ');
@@ -1013,13 +1013,13 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 					</tr>`;})}`;
 	      return tableBody;
 	    }
-	    else if (this.dxDataGridContext?.total === 0) {
+	    else if (this.enchantedDataGridContext?.total === 0) {
 	      return html`
 					<div part="${DATA_GRID_PARTS.TABLE_BODY_CONTAINER}">         
 						<icon-items-search-empty size="128" color="rgba(0, 0, 0, 0.38)"></icon-items-search-empty>
 						<p data-testid="table-result-label" part="${DATA_GRID_PARTS.TABLE_RESULT_LABEL}">${this.getMessage('output.message.no.results.found')}</p>
 						<p part="${DATA_GRID_PARTS.TABLE_RESULT_DESCRIPTION}">
-						${unsafeHTML(this.getMessage('output.message.no.match.found', [{ '{search_term}': String(this.dxDataGridContext?.searchValue) }]))}
+						${unsafeHTML(this.getMessage('output.message.no.match.found', [{ '{search_term}': String(this.enchantedDataGridContext?.searchValue) }]))}
 						</p>
 					</div>
 				`;
@@ -1071,7 +1071,7 @@ export class EnchantedDataGrid extends EnchantedAcBaseElement {
 					role="table"
 					part="${DATA_GRID_PARTS.TABLE_CONTAINER}"
 					@focus=${(evt: FocusEvent) => { return this.handleTableFocus(evt); }}
-					tabindex=${this.customRowNavigation && (this.dxDataGridContext?.searchItems?.length ?? 0) > 0 ? '0' : undefined}
+					tabindex=${this.customRowNavigation && (this.enchantedDataGridContext?.searchItems?.length ?? 0) > 0 ? '0' : undefined}
 				>
 					${this.renderTableHeader()}
 					${this.renderTableBody()}

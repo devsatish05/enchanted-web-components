@@ -34,15 +34,11 @@ import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/search';
 @customElement('enchanted-header')
 @localized()
 export class EnchantedHeader extends EnchantedAcBaseElement {
-
-  @property({ type: String }) color = 'rgba(0, 0, 0, .32)'; // equivalent to $BLACK32P in atomic-component.scss
   @property({ type: String }) headerTitle = '';
   @property({ type: Boolean }) showBackIcon = false;
-
   @property({ type: Boolean }) isSideNavOpen = false;
   @property({ type: Boolean }) disabled = false;
-  @property()
-  variant: HEADER_VARIANT | undefined = undefined;
+  @property() variant: HEADER_VARIANT | undefined = undefined;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -69,13 +65,15 @@ export class EnchantedHeader extends EnchantedAcBaseElement {
     switch (variant) {
       case HEADER_VARIANT.HEADER_AUTHORING:
         return html`
-          <enchanted-textfield label=""
+          <enchanted-input-textfield label=""
+            ?disabled="${this.disabled}"
             exportparts=${HEADER_PARTS.INPUT} 
             placeholder="${this.getMessage('header.enduser.search.placeholder')}"
           >
           </enchanted-textfield>
           <div part=${HEADER_PARTS.HEADER_SPACING_END}>
-            <enchanted-button 
+            <enchanted-button
+              ?disabled="${this.disabled}"
               buttontext=''
               ?outlined="${false}"
               data-testid="enchanted-filter-button"
@@ -88,7 +86,7 @@ export class EnchantedHeader extends EnchantedAcBaseElement {
         return html`
           <div part=${HEADER_PARTS.HEADER_SPACING_END}>
             <enchanted-button
-              ?disabled="${this.disabled || nothing}"
+              ?disabled="${this.disabled}"
               .icon="${html`<icon-search size="16" color="currentColor"></icon-search>`}"
               buttontext="${this.getMessage('header.enduser.search')}"
               exportparts="${Object.values(BUTTON_PARTS).join(',')}"
@@ -110,7 +108,8 @@ export class EnchantedHeader extends EnchantedAcBaseElement {
           <div part=${this.isSideNavOpen ? HEADER_PARTS.HEADER_SPACING_START_HAMBURGER : HEADER_PARTS.HEADER_SPACING_START} >
             ${this.showBackIcon
               ? html`
-              <enchanted-button 
+              <enchanted-button
+              ?disabled="${this.disabled}"
               buttontext=''
               ?outlined="${false}"
               data-testid="enchanted-back-button"

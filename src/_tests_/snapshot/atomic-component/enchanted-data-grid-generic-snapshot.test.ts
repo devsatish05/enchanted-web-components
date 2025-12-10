@@ -31,7 +31,7 @@ import { ENCHANTED_DATA_GRID_COLUMNS, ENCHANTED_DATA_GRID_PICKER_COLUMNS } from 
 import { DATA_GRID_PARTS } from '../../../types/cssClassEnums.js';
 import { initSessionStorage } from '../../utils.js';
 
-const dxLocalization: Map<string, string> = initDataGridLocalizedStrings();
+const localization: Map<string, string> = initDataGridLocalizedStrings();
 
 const testColDef: EnchantedDataGridColDef[] = ENCHANTED_DATA_GRID_COLUMNS;
 const testPickerColDef: EnchantedDataGridColDef[] = ENCHANTED_DATA_GRID_PICKER_COLUMNS;
@@ -70,7 +70,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     const link = appendEnchantedStylingLink();
     render(
       html`<div style="width: 700px; height: 600px;">
-        <enchanted-data-grid-generic .localization=${dxLocalization} .columns="${testColDef}"></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .localization=${localization} .columns="${testColDef}"></enchanted-data-grid-generic>
       </div>`,
       document.body,
     );
@@ -88,7 +88,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     render(
       html`
         <div style="width: 700px; height: 500px;">
-          <enchanted-data-grid-generic .localization=${dxLocalization} .columns="${testColDef}" isLoading=${true}></enchanted-data-grid-generic>
+          <enchanted-data-grid-generic .localization=${localization} .columns="${testColDef}" .isLoading=${true}></enchanted-data-grid-generic>
         </div>
       `,
       document.body,
@@ -107,7 +107,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     render(
       html`
         <div style="width: 700px; height: 500px;">
-          <enchanted-data-grid-generic .localization=${dxLocalization} .columns="${testColDef}" hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
+          <enchanted-data-grid-generic .localization=${localization} .columns="${testColDef}" .hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
         </div>
       `,
       document.body,
@@ -132,7 +132,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     render(
       html`
         <div style="width: 700px; height: 150px;">
-          <enchanted-data-grid-generic .localization=${dxLocalization} .columns="${invalidColumn}" hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
+          <enchanted-data-grid-generic .localization=${localization} .columns="${invalidColumn}" .hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
         </div>
       `,
       document.body,
@@ -154,11 +154,11 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${testColDef}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_PICKER}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_PICKER}
             .data=${data}
-            .localization=${dxLocalization}
+            .localization=${localization}
           ></enchanted-data-grid-generic>
         </div>
       `,
@@ -321,11 +321,11 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${testColDef}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
-            .localization=${dxLocalization}
+            .localization=${localization}
           ></enchanted-data-grid-generic>
         </div>
       `,
@@ -417,11 +417,11 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${testColDef}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
-            .localization=${dxLocalization}
+            .localization=${localization}
           ></enchanted-data-grid-generic>
         </div>
       `,
@@ -442,7 +442,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     render(
       html`
         <div style="width: 2000px;">
-          <enchanted-data-grid-generic .localization=${dxLocalization} .columns="${testColDef}" hasContentSourceAvailable=${false} 
+          <enchanted-data-grid-generic .localization=${localization} .columns="${testColDef}" .hasContentSourceAvailable=${false} 
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_PICKER}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_PICKER}
             .data=${data}
@@ -456,7 +456,7 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
     await dataGrid.waitForDisplayed();
 
     await browser.setWindowSize(2000, SNAPSHOT_WINDOW_HEIGHT);
-    await expect(browser).toMatchFullPageSnapshot('enchanted-data-grid-generic-with-picker-width-of-2000-3');
+    await expect(browser).toMatchFullPageSnapshot('enchanted-data-grid-generic-with-picker-width-of-2000-3', 100);
 
     document.head.removeChild(link);
   });
@@ -469,9 +469,9 @@ describe('EnchantedDataGridGeneric - Snapshot testing', () => {
         <div style="width: 700px; height: 600px;">
           <enchanted-data-grid-generic
             .columns="${testPickerColDef}"
-            isLoading=${false}
+            .isLoading=${false}
             .data="${pickerData}"
-            .localization=${dxLocalization}
+            .localization=${localization}
           ></enchanted-data-grid-generic>
         </div>
       `,

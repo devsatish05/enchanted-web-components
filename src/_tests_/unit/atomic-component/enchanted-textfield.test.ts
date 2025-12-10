@@ -95,7 +95,7 @@ describe('EnchantedInputTextfield component testing', () => {
     let component = await $('enchanted-textfield').getElement();
     await expect(component).toBeDisplayed();
     // To get the label element
-    let labelElement = await component.$('>>>label[data-testid="enchanted-textfield-label"]').getElement();
+    let labelElement = await component.$('>>>label[data-testid="enchanted-input-textfield-label"]').getElement();
     await expect(labelElement).toHaveText('test-label');
     // To get the input element
     let inputElement = await component.$('>>>input[data-testid="enchanted-textfield-input"]').getElement();

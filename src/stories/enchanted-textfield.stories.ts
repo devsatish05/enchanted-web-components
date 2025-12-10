@@ -1,20 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import '../components/atomic-component/enchanted-textfield';
-import { svgIconClear } from '../_tests_/assets/svg-clear';
-import { svgIconSearch } from '../_tests_/assets/svg-search';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/close';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/search';
 
 /**
  * @interface EnchantedInputTextfieldProps
  * Props for the enchanted-textfield web component.
  *
  * @property value - The value of the textfield.
- * @property type - The input type (e.g., 'text', 'password').
+ * @property type - The input type (e.g., 'text', 'password', 'email', 'number').
  * @property label - The label for the textfield.
  * @property placeholder - The placeholder text for the textfield.
  * @property disabled - If true, disables the textfield.
- * @property clearIconUrl - The URL for the clear icon.
- * @property actionIconUrl - The URL for the action icon.
+ * @property clearIconUrl - The URL or SVG template for the clear icon.
+ * @property actionIconUrl - The URL or SVG template for the action icon.
+ * @property field - Field type or name for the input textfield.
+ * @property hassearchedbefore - If true, indicates a search has been performed.
+ * @property autocomplete - Autocomplete attribute value ('on' or 'off').
+ * @property ariaLabel - ARIA label for accessibility.
  */
 export interface EnchantedInputTextfieldProps {
   value?: string;
@@ -22,21 +26,80 @@ export interface EnchantedInputTextfieldProps {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
-  clearIconUrl?: string;
-  actionIconUrl?: string;
+  clearIconUrl?: string | unknown;
+  actionIconUrl?: string | unknown;
+  field?: string;
+  hassearchedbefore?: boolean;
+  autocomplete?: string;
+  ariaLabel?: string;
 }
 
 const meta: Meta<EnchantedInputTextfieldProps> = {
   title: 'Input/enchanted-textfield',
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: 'The Input Textfield component provides a standard text input with label, placeholder, and optional clear/action icons. It supports various HTML5 input ' +
+          'types (text, password, email, number), autocomplete behavior, and RTL text direction. Use for single-line text entry in forms, search fields, and data input ' +
+          'interfaces.',
+      },
+    },
+  },
   argTypes: {
-    value: { control: 'text', description: 'The value of the textfield.', table: { defaultValue: { summary: '' } } },
-    type: { control: 'text', description: 'The input type (e.g., "text", "password").', table: { defaultValue: { summary: 'text' } } },
-    label: { control: 'text', description: 'The label for the textfield.', table: { defaultValue: { summary: '' } } },
-    placeholder: { control: 'text', description: 'The placeholder text for the textfield.', table: { defaultValue: { summary: '' } } },
-    disabled: { control: 'boolean', description: 'If true, disables the textfield.', table: { defaultValue: { summary: 'false' } } },
-    clearIconUrl: { control: 'text', description: 'The URL for the clear icon.', table: { defaultValue: { summary: '' } } },
-    actionIconUrl: { control: 'text', description: 'The URL for the action icon.', table: { defaultValue: { summary: '' } } },
+    value: {
+      control: { type: 'text' },
+      description: 'Current value of the textfield. Can be set programmatically or updated by user input. Binds to the underlying input element value.',
+      table: { category: 'Content', type: { summary: 'string' }, defaultValue: { summary: '' } },
+    },
+    label: {
+      control: { type: 'text' },
+      description: 'Label text displayed above the textfield. Provides context about the expected input. Properly associated with the input for accessibility.',
+      table: { category: 'Content', type: { summary: 'string' }, defaultValue: { summary: undefined } },
+    },
+    placeholder: {
+      control: { type: 'text' },
+      description: 'Placeholder text shown when the field is empty. Provides hints about the expected format or example input. Disappears when user starts typing.',
+      table: { category: 'Content', type: { summary: 'string' }, defaultValue: { summary: '' } },
+    },
+    type: {
+      control: { type: 'text' },
+      description: 'HTML5 input type attribute. Common values: text, password, email, number, tel, url. Controls input validation and mobile keyboard display.',
+      table: { category: 'Form', type: { summary: 'string' }, defaultValue: { summary: 'text' } },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      description: 'Disables the textfield, preventing user input and interaction. The field appears grayed out and does not accept focus or keyboard input.',
+      table: { category: 'State', type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    clearIconUrl: {
+      control: { type: 'object' },
+      description: 'URL or SVG template for the clear icon button. Displays when the field has content, allowing users to quickly clear the input value.',
+    },
+    actionIconUrl: {
+      control: { type: 'object' },
+      description: 'URL or SVG template for an action icon button. Commonly used for search icons or submit actions. Click events can be handled externally.',
+    },
+    field: {
+      control: { type: 'text' },
+      description: 'Field type or name identifier for the input textfield. Used for form processing, validation, or programmatic field identification.',
+      table: { category: 'Form', type: { summary: 'string' }, defaultValue: { summary: '' } },
+    },
+    hassearchedbefore: {
+      control: { type: 'boolean' },
+      description: 'Indicates whether a search has been performed before. Used to track search state in search field implementations.',
+      table: { category: 'State', type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    autocomplete: {
+      control: { type: 'text' },
+      description: 'HTML autocomplete attribute. Controls browser autocomplete behavior. Common values: "on", "off", "email", "username", "new-password".',
+      table: { category: 'Form', type: { summary: 'string' }, defaultValue: { summary: 'on' } },
+    },
+    ariaLabel: {
+      control: { type: 'text' },
+      description: 'ARIA label for accessibility. Provides descriptive text for screen readers when the visible label is insufficient or needs clarification.',
+      table: { category: 'Accessibility', type: { summary: 'string' }, defaultValue: { summary: '' } },
+    },
   },
   args: {
     value: '',
@@ -44,8 +107,12 @@ const meta: Meta<EnchantedInputTextfieldProps> = {
     label: 'Text Field',
     placeholder: 'Enter text',
     disabled: false,
-    clearIconUrl: '',
-    actionIconUrl: '',
+    clearIconUrl: html`<icon-close size="16" color="black"></icon-close>`,
+    actionIconUrl: html`<icon-search size="16" color="black"></icon-search>`,
+    field: '',
+    hassearchedbefore: false,
+    autocomplete: 'on',
+    ariaLabel: '',
   },
   render: (args) => {return html`
     <enchanted-textfield
@@ -54,9 +121,13 @@ const meta: Meta<EnchantedInputTextfieldProps> = {
       label="${args.label}"
       placeholder="${args.placeholder}"
       ?disabled=${args.disabled}
-      .clearIconUrl=${svgIconClear}
-      .actionIconUrl=${svgIconSearch}
-    ></enchanted-textfield>
+      .clearIconUrl=${args.clearIconUrl}
+      .actionIconUrl=${args.actionIconUrl}
+      field="${args.field}"
+      ?hassearchedbefore=${args.hassearchedbefore}
+      autocomplete="${args.autocomplete}"
+      aria-label="${args.ariaLabel}"
+    ></enchanted-input-textfield>
   `;},
 };
 
@@ -66,44 +137,132 @@ type Story = StoryObj<EnchantedInputTextfieldProps>;
 export const Default: Story = {};
 
 export const AllStates: Story = {
-  render: () => {return html`
-    <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
-      <div>
-        <div>Default</div>
-        <enchanted-textfield
-          label="Text Field"
-          placeholder="Enter text"
-        ></enchanted-textfield>
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: 'Comprehensive showcase of all input textfield states and variations:\n\n' +
+          '**Input Types:** Supports HTML5 types like text, password, email, and number with appropriate validation and mobile keyboard optimization.\n\n' +
+          '**Icons:** Optional clear icon for quick value clearing and action icon for operations like search or submit.\n\n' +
+          '**States:** Includes empty, filled, disabled, and various placeholder configurations.\n\n' +
+          '**Features:** Autocomplete control, RTL support, and full accessibility with ARIA labels.',
+      },
+    },
+  },
+  render: () => {
+    return html`
+      <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Default (Empty)</div>
+          <enchanted-input-textfield
+            label="Text Field"
+            placeholder="Enter text"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With Value</div>
+          <enchanted-input-textfield
+            label="Text Field"
+            .value=${'Sample text'}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With Placeholder</div>
+          <enchanted-input-textfield
+            label="Username"
+            placeholder="Enter your username"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Password Type</div>
+          <enchanted-input-textfield
+            label="Password"
+            type="password"
+            placeholder="Enter password"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Email Type</div>
+          <enchanted-input-textfield
+            label="Email"
+            type="email"
+            placeholder="name@example.com"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Number Type</div>
+          <enchanted-input-textfield
+            label="Age"
+            type="number"
+            placeholder="Enter age"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With Clear Icon</div>
+          <enchanted-input-textfield
+            label="Search"
+            .value=${'Search query'}
+            .clearIconUrl=${html`<icon-close size="16" color="black"></icon-close>`}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With Action Icon</div>
+          <enchanted-input-textfield
+            label="Search"
+            placeholder="Search..."
+            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With Both Icons</div>
+          <enchanted-input-textfield
+            label="Search Field"
+            .value=${'Search term'}
+            .clearIconUrl=${html`<icon-close size="16" color="black"></icon-close>`}
+            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Disabled (Empty)</div>
+          <enchanted-input-textfield
+            label="Text Field"
+            placeholder="Disabled"
+            ?disabled=${true}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Disabled (Filled)</div>
+          <enchanted-input-textfield
+            label="Text Field"
+            .value=${'Disabled value'}
+            ?disabled=${true}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Autocomplete Off</div>
+          <enchanted-input-textfield
+            label="Credit Card"
+            placeholder="XXXX-XXXX-XXXX-XXXX"
+            autocomplete="off"
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">With ARIA Label</div>
+          <enchanted-input-textfield
+            label="Search"
+            placeholder="Type to search"
+            aria-label="Search products in catalog"
+            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+          ></enchanted-input-textfield>
+        </div>
+        <div style="width: 250px;">
+          <div style="margin-bottom: 8px; font-weight: 500;">Long Placeholder</div>
+          <enchanted-input-textfield
+            label="Description"
+            placeholder="Enter a detailed description of your item"
+          ></enchanted-input-textfield>
+        </div>
       </div>
-      <div>
-        <div>Disabled</div>
-        <enchanted-textfield
-          label="Text Field"
-          value="Disabled"
-          ?disabled=${true}
-        ></enchanted-textfield>
-      </div>
-      <div>
-        <div>With Placeholder</div>
-        <enchanted-textfield
-          label="Text Field"
-          placeholder="Type here..."
-        ></enchanted-textfield>
-      </div>
-      <div>
-        <div>With Clear Icon</div>
-        <enchanted-textfield
-          label="Text Field"
-          clearIconUrl="https://cdn-icons-png.flaticon.com/512/1828/1828778.png"
-        ></enchanted-textfield>
-      </div>
-      <div>
-        <div>With Action Icon</div>
-        <enchanted-textfield
-          label="Text Field"
-          actionIconUrl="https://cdn-icons-png.flaticon.com/512/709/709586.png"
-        ></enchanted-textfield>
-      </div>
-    </div>
-  `;},
+    `;
+  },
 };

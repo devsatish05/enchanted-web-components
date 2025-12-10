@@ -48,7 +48,7 @@ dxLocalization.set('data.grid.invalid.column.definition', 'Invalid column defini
 describe('Data Grid testing', () => {
 
   interface EnchantedDataGridElement extends HTMLElement {
-    dxDataGridContext?: { sortDirection: string; sortAttribute: string };
+    enchantedDataGridContext?: { sortDirection: string; sortAttribute: string };
     getPartHeaderSort(headerField: string, sortDirection: string): string;
   }
   const testColDef: EnchantedDataGridColDef[] =
@@ -217,11 +217,11 @@ describe('Data Grid testing', () => {
   it('should return correct sort button class based on direction', async () => {
     const grid = document.createElement('enchanted-data-grid') as EnchantedDataGridElement;
       
-    grid.dxDataGridContext = { sortDirection: 'asc', sortAttribute: '_source.title' };
+    grid.enchantedDataGridContext = { sortDirection: 'asc', sortAttribute: '_source.title' };
   
     expect(grid.getPartHeaderSort('_source.title', 'asc')).toBe(DATA_GRID_PARTS.TABLE_HEADER_SORT_BUTTON);
   
-    grid.dxDataGridContext.sortDirection = 'desc';
+    grid.enchantedDataGridContext.sortDirection = 'desc';
     expect(grid.getPartHeaderSort('_source.title', 'asc')).toBe(DATA_GRID_PARTS.TABLE_HEADER_ASC_SORT_BUTTON_HIDDEN);
   });
 

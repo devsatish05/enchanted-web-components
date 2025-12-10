@@ -141,7 +141,7 @@ describe('Data Grid Generic testing', () => {
   it('EnchantedDataGridGeneric - should render component with loading state', async () => {
     render(
       html`
-        <enchanted-data-grid-generic .columns=${testColDef} isLoading=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${testColDef} .isLoading=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );
@@ -156,7 +156,7 @@ describe('Data Grid Generic testing', () => {
   it('EnchantedDataGridGeneric - should render component with has middleaware error state', async () => {
     render(
       html`
-        <enchanted-data-grid-generic .columns=${testColDef} hasMiddlewareError=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${testColDef} .hasMiddlewareError=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );
@@ -171,7 +171,7 @@ describe('Data Grid Generic testing', () => {
   it('EnchantedDataGridGeneric - should render component with has no content source state', async () => {
     render(
       html`
-        <enchanted-data-grid-generic .columns=${testColDef} hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${testColDef} .hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );
@@ -193,7 +193,7 @@ describe('Data Grid Generic testing', () => {
     ];
     render(
       html`
-        <enchanted-data-grid-generic .columns=${invalidColumn} hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${invalidColumn} .hasContentSourceAvailable=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );
@@ -209,7 +209,7 @@ describe('Data Grid Generic testing', () => {
   it('EnchantedDataGridGeneric - should not display table content when loading', async () => {
     render(
       html`
-        <enchanted-data-grid-generic .columns=${testColDef} isLoading=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${testColDef} .isLoading=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );
@@ -471,7 +471,7 @@ describe('Data Grid Generic testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${columns}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
@@ -646,7 +646,7 @@ describe('Data Grid Generic testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${columns}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
@@ -689,7 +689,7 @@ describe('Data Grid Generic testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${columns}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
@@ -789,7 +789,7 @@ describe('Data Grid Generic testing', () => {
         <div style="width: 2000px;">
           <enchanted-data-grid-generic
             .columns=${columns}
-            isLoading=${false}
+            .isLoading=${false}
             customTableHeaderPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             customTableCellPart=${DATA_GRID_PARTS.TABLE_COLUMN_AUTHORING}
             .data=${data}
@@ -819,7 +819,7 @@ describe('Data Grid Generic testing', () => {
   it('EnchantedDataGridGeneric - should focus on the loading container when focusOnLoadingContainer is called', async () => {
     render(
       html`
-        <enchanted-data-grid-generic .columns=${testColDef} isLoading=${true}></enchanted-data-grid-generic>
+        <enchanted-data-grid-generic .columns=${testColDef} .isLoading=${true}></enchanted-data-grid-generic>
       `,
       document.body
     );

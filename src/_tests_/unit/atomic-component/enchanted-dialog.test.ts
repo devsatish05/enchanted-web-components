@@ -27,8 +27,8 @@ import { initSessionStorage } from '../../utils';
 import { DialogSizes } from '../../../types/enchanted-dialog';
 import { DIALOG_PARTS } from '../../../types/cssClassEnums';
 
-const dxLocalization: Map<string, string> = new Map<string, string>();
-dxLocalization.set('generic.label', 'Label');
+const localization: Map<string, string> = new Map<string, string>();
+localization.set('generic.label', 'Label');
 
 describe('EnchantedDialog component testing', () => {
   before(async () => {
@@ -66,12 +66,12 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should NOT render default dialog children when open attribute is not present', async () => {
     render(
       html`
-        <enchanted-dialog .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
     let component = await $('enchanted-dialog').getElement();
-    expect(component).not.toHaveText(dxLocalization.get('generic.label'));
+    expect(component).not.toHaveText(localization.get('generic.label'));
     let svgIcon = await component.$('>>>enchanted-svg-icon').getElement();
     expect(svgIcon).not.toBeDisplayed();
   });
@@ -79,21 +79,22 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should render default dialog children when open attribute is present', async () => {
     render(
       html`
-        <enchanted-dialog open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
     let component = await $('enchanted-dialog').getElement();
     await expect(component).toBeDisplayed();
-    expect(component).toHaveText(dxLocalization.get('generic.label'));
+    expect(component).toHaveText(localization.get('generic.label'));
     let svgIcon = await component.$('>>>enchanted-svg-icon').getElement();
+    await browser.pause(100);
     expect(svgIcon).toBeDisplayed();
   });
 
   it('EnchantedDialog - should render dialog with title and content attribute property', async () => {
     render(
       html`
-        <enchanted-dialog title="Test Title" open .localization=${dxLocalization}>
+        <enchanted-dialog title="Test Title" open .localization=${localization}>
           <enchanted-circular-progress slot="content"></enchanted-circular-progress>
         </enchanted-dialog>
       `,
@@ -111,7 +112,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should render dialog with overrideTitle property', async () => {
     render(
       html`
-        <enchanted-dialog open overrideTitle .localization=${dxLocalization}>
+        <enchanted-dialog open overrideTitle .localization=${localization}>
           <enchanted-header variant="header-authoring-modal" />
           <enchanted-circular-progress slot="content"></enchanted-circular-progress>
         </enchanted-dialog>
@@ -131,7 +132,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should close the dialog when handleClose() is triggered', async () => {
     render(
       html`
-        <enchanted-dialog open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -149,7 +150,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should automatically focus on itself when opened', async () => {
     render(
       html`
-        <enchanted-dialog open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -168,7 +169,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - support size md', async () => {
     render(
       html`
-        <enchanted-dialog size="${DialogSizes.MD}" open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog size="${DialogSizes.MD}" open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -181,7 +182,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - support size lg', async () => {
     render(
       html`
-        <enchanted-dialog size="${DialogSizes.LG}" open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog size="${DialogSizes.LG}" open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -194,7 +195,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - support size sm', async () => {
     render(
       html`
-        <enchanted-dialog size="${DialogSizes.SM}" open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog size="${DialogSizes.SM}" open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -207,7 +208,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - support size xl', async () => {
     render(
       html`
-        <enchanted-dialog size="${DialogSizes.XL}" open .localization=${dxLocalization}></enchanted-dialog>
+        <enchanted-dialog size="${DialogSizes.XL}" open .localization=${localization}></enchanted-dialog>
       `,
       document.body
     );
@@ -220,7 +221,7 @@ describe('EnchantedDialog component testing', () => {
   it('EnchantedDialog - should render dialog in chat mode', async () => {
     render(
       html`
-        <enchanted-dialog size="chat" open .localization=${dxLocalization}>
+        <enchanted-dialog size="chat" open .localization=${localization}>
         </enchanted-dialog>
       `,
       document.body
@@ -235,7 +236,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should have aria-modal when opened', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
             <div slot="content">
               <input type="text" placeholder="Search" />
             </div>
@@ -256,7 +257,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should temporarily focus dialog element on open', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <input type="text" id="test-input" />
             </div>
@@ -279,7 +280,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should move focus to first focusable element after delay', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <input type="text" id="test-input" />
             </div>
@@ -300,7 +301,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should remove aria-label after initial announcement', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -321,7 +322,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should remove aria-hidden from content wrapper after announcement', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -343,7 +344,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - refocusDialog() should re-announce dialog', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -373,7 +374,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - refocusDialog() should restore aria-label temporarily', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -399,7 +400,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - refocusDialog() should clean up attributes after announcement', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -426,7 +427,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - refocusDialog() should not run if dialog is closed', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -451,7 +452,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should handle shadow DOM input focus correctly', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <enchanted-textfield></enchanted-textfield>
             </div>
@@ -475,7 +476,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should remove role="dialog" after announcement to prevent VoiceOver context', async () => {
       render(
         html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${dxLocalization}>
+          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
               <input type="text" />
             </div>
@@ -497,7 +498,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should have proper ARIA attributes for accessibility', async () => {
       render(
         html`
-          <enchanted-dialog open dialogTitle="Accessible Dialog" .localization=${dxLocalization}></enchanted-dialog>
+          <enchanted-dialog open dialogTitle="Accessible Dialog" .localization=${localization}></enchanted-dialog>
         `,
         document.body
       );
@@ -524,7 +525,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should close when Enter key is pressed on close button', async () => {
       render(
         html`
-          <enchanted-dialog open .localization=${dxLocalization}></enchanted-dialog>
+          <enchanted-dialog open .localization=${localization}></enchanted-dialog>
         `,
         document.body
       );
@@ -542,7 +543,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should close when Space key is pressed on close button', async () => {
       render(
         html`
-          <enchanted-dialog open .localization=${dxLocalization}></enchanted-dialog>
+          <enchanted-dialog open .localization=${localization}></enchanted-dialog>
         `,
         document.body
       );
@@ -560,7 +561,7 @@ describe('EnchantedDialog component testing', () => {
     it('EnchantedDialog - should not have backdrop in chat mode for better accessibility', async () => {
       render(
         html`
-          <enchanted-dialog size="chat" open .localization=${dxLocalization}></enchanted-dialog>
+          <enchanted-dialog size="chat" open .localization=${localization}></enchanted-dialog>
         `,
         document.body
       );
@@ -574,7 +575,7 @@ describe('EnchantedDialog component testing', () => {
       const customTitle = 'Important Announcement';
       render(
         html`
-          <enchanted-dialog open dialogTitle="${customTitle}" .localization=${dxLocalization}></enchanted-dialog>
+          <enchanted-dialog open dialogTitle="${customTitle}" .localization=${localization}></enchanted-dialog>
         `,
         document.body
       );

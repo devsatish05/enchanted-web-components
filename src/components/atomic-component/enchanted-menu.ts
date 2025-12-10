@@ -31,9 +31,6 @@ import { EnchantedMenuPlacement, EnchantedMenuSize } from '../../types/enchanted
 @customElement('enchanted-menu')
 @localized()
 export class EnchantedMenu extends EnchantedAcBaseElement {
-  @property({ type: Boolean })
-  open = false;
-
   @property({ type: Number })
   menuDelay = 300;
 
@@ -55,7 +52,6 @@ export class EnchantedMenu extends EnchantedAcBaseElement {
   }, 100);
 
   connectedCallback(): void {
-    this.openMenu = this.open;
     super.connectedCallback();
     // binding event in this function because we need to access slot elements
     // https://lit.dev/docs/components/events/#adding-event-listeners-to-the-component-or-its-shadow-root
