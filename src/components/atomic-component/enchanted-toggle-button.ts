@@ -51,6 +51,12 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
   iconUrls: string[] = [];
 
   @property({ attribute: false })
+  icons: TemplateResult[] = [];
+
+  @property()
+  icon: TemplateResult | undefined;
+
+  @property({ attribute: false })
   values: string[] = [];
 
   @property({ type: String })
@@ -58,9 +64,6 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
 
   @property({ type: String })
   singleButtonAria = '';
-
-  @property()
-  icon: TemplateResult | undefined;
 
   private handleClick(event: Event) {
     event.stopPropagation();
@@ -72,7 +75,7 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
       this.dispatchEvent(buttonClickEvent); 
     }
   }
- 
+  
   private partAttributeDecider(part: string): string {
     let returnPart = part;
 
@@ -114,33 +117,52 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
     return TOGGLE_BUTTON_PARTS.TOGGLE_OFF_SINGLE_BUTTON;
   }
 
+  private renderIcon(src: TemplateResult | string| undefined, part: string) {
+    if (!src) return nothing;
+    if (typeof src === 'string') {
+      return html`
+        <img
+          src="${src}"
+          alt="${src}"
+          part=${this.partAttributeDecider(part)}
+          data-testid="enchanted-toggle-button-img"
+        />`;
+    }
+    return html`
+      <span
+        part=${this.partAttributeDecider(part)}
+        data-testid="enchanted-toggle-button-icon"
+      > ${src}</span>
+    `;
+  }
+
   render() {
     return html`
       <div data-testid="enchanted-toggle-button-div" part=${this.partAttributeDecider(TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_DIV)}>
-      ${this.singleButton === true ? html`
-        ${this.showBadge === true
-        ? html`
-          <enchanted-badge 
-            data-testid="enchanted-badge" 
-            part='${isLTR()
-              ? TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE
-              :`${TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE} ${TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE_RTL}`}'
-          ></enchanted-badge>`
-        : ''}
-        <enchanted-icon-button
-          title=${this.singleButtonTitle}
-          aria-label=${this.singleButtonAria}
-          role='button'
-          tabindex='0'
-          withPadding
-          part="${TOGGLE_BUTTON_PARTS.TOGGLE_SINGLE_BUTTON} ${this.getButtonAttribute()}"
-          ?disabled=${this.disabled || nothing}
-          size=${ICON_BUTTON_SIZES.MEDIUM}
-          .icon=${html `${this.icon}`}
-          data-testid="enchanted-toggle-single-button"
-          exportparts="${ICON_BUTTON_EXPORT_PARTS}"
-        >
-        </enchanted-icon-button>
+        ${this.singleButton === true ? html`
+          ${this.showBadge === true
+          ? html`
+            <enchanted-badge 
+              data-testid="enchanted-badge" 
+              part='${isLTR()
+                ? TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE
+                :`${TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE} ${TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_BADGE_RTL}`}'
+            ></enchanted-badge>`
+          : ''}
+          <enchanted-icon-button
+            title=${this.singleButtonTitle}
+            aria-label=${this.singleButtonAria}
+            role='button'
+            tabindex='0'
+            withPadding
+            part="${TOGGLE_BUTTON_PARTS.TOGGLE_SINGLE_BUTTON} ${this.getButtonAttribute()}"
+            ?disabled=${this.disabled || nothing}
+            size=${ICON_BUTTON_SIZES.MEDIUM}
+            .icon=${this.icon}
+            data-testid="enchanted-toggle-single-button"
+            exportparts="${ICON_BUTTON_EXPORT_PARTS}"
+          >
+          </enchanted-icon-button>
         `
         : html`
           <button
@@ -150,12 +172,7 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
             disabled=${this.disabled || nothing}
             value=${this.values[0]}
           >
-            <img
-              src="${this.iconUrls[0]}"
-              alt="${this.iconUrls[0]}"
-              part=${this.partAttributeDecider(TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_ICON)}
-              data-testid="enchanted-toggle-button-img"
-            />
+            ${this.renderIcon(this.icons[0] || this.iconUrls[0], TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_ICON)}
           </button>
           <button
             data-testid="enchanted-toggle-button-second"
@@ -164,22 +181,16 @@ export class EnchantedToggleButton extends EnchantedAcBaseElement {
             disabled=${this.disabled || nothing}
             value=${this.values[1]}
           >
-            <img
-              src="${this.iconUrls[1]}"
-              alt="${this.iconUrls[1]}"
-              part=${this.partAttributeDecider(TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_ICON)}
-              data-testid="enchanted-toggle-button-img"
-            />
+            ${this.renderIcon(this.icons[1] || this.iconUrls[1], TOGGLE_BUTTON_PARTS.TOGGLE_BUTTON_ICON)}
           </button>
         `}
       </div>
     `;
   }
 }
- 
+
 declare global {
   interface HTMLElementTagNameMap {
     'enchanted-toggle-button': EnchantedToggleButton;
   }
 }
- 

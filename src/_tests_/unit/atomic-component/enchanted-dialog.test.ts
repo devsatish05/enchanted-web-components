@@ -21,6 +21,7 @@ import '../../../components/atomic-component/enchanted-dialog';
 import '../../../components/atomic-component/enchanted-textfield';
 import '../../../components/atomic-component/enchanted-circular-progress';
 import '../../../components/atomic-component/enchanted-header';
+import { EnchantedDialog } from '../../../components/atomic-component/enchanted-dialog';
 
 // Helper imports
 import { initSessionStorage } from '../../utils';
@@ -147,23 +148,24 @@ describe('EnchantedDialog component testing', () => {
     await expect(component).not.toHaveAttribute('open');
   });
   
-  it('EnchantedDialog - should automatically focus on itself when opened', async () => {
+  it('EnchantedDialog - should focus the first focusable element in slotted content when opened', async () => {
     render(
       html`
-        <enchanted-dialog open .localization=${localization}></enchanted-dialog>
+        <enchanted-dialog open .localization=${localization}>
+          <div slot="content">
+            <input type="text" id="test-input" />
+          </div>
+        </enchanted-dialog>
       `,
       document.body
     );
-
-    await browser.pause(10); // Check immediately after open
-
+    await browser.pause(150);
     let component = await document.querySelector('enchanted-dialog');
-    const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`) as HTMLElement;
+    const testInput = document.querySelector('input[id="test-input"]');
     await expect(component).toBeDisplayed();
 
-    // Dialog should be focused initially
-    const hasFocus = dialogElement === component?.shadowRoot?.activeElement;
-    await expect(hasFocus).toBeTruthy();
+    // Input in slotted content should receive focus
+    await expect(testInput).toBe(document.activeElement);
   });
 
   it('EnchantedDialog - support size md', async () => {
@@ -254,51 +256,24 @@ describe('EnchantedDialog component testing', () => {
       expect(dialogElement).toHaveAttribute('aria-modal', 'true');
     });
 
-    it('EnchantedDialog - should temporarily focus dialog element on open', async () => {
+    it('EnchantedDialog - should prioritize slotted content over shadow DOM elements', async () => {
       render(
         html`
           <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
             <div slot="content">
-              <input type="text" id="test-input" />
+              <input type="text" id="slotted-input" />
             </div>
           </enchanted-dialog>
         `,
         document.body
       );
-
-      await browser.pause(10); // Check immediately after open
-
-      const component = document.querySelector('enchanted-dialog');
-      const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`) as HTMLElement;
-
-      // Dialog should be focused initially
-      const hasFocus = dialogElement === component?.shadowRoot?.activeElement;
-
-      expect(hasFocus).toBeTruthy();
+      await browser.pause(150);
+      const slottedInput = document.querySelector('input[id="slotted-input"]') as HTMLElement;
+      // Slotted input should be focused (found first, before shadow DOM close button)
+      await expect(slottedInput).toBe(document.activeElement);
     });
 
-    it('EnchantedDialog - should move focus to first focusable element after delay', async () => {
-      render(
-        html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
-            <div slot="content">
-              <input type="text" id="test-input" />
-            </div>
-          </enchanted-dialog>
-        `,
-        document.body
-      );
-
-      await browser.pause(150); // Wait for focus sequence to complete (100ms + 20ms)
-
-      const component = document.querySelector('enchanted-dialog');
-      const activeElement = component?.shadowRoot?.activeElement as HTMLElement;
-
-      // The first focusable element in the dialog (close button) should be focused
-      expect(activeElement).not.toBeNull();
-    });
-
-    it('EnchantedDialog - should remove aria-label after initial announcement', async () => {
+    it('EnchantedDialog - should have aria-label for accessibility', async () => {
       render(
         html`
           <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
@@ -309,119 +284,38 @@ describe('EnchantedDialog component testing', () => {
         `,
         document.body
       );
-
-      await browser.pause(150); // Wait for cleanup (100ms + 20ms)
-
+      await browser.pause(150);
       const component = document.querySelector('enchanted-dialog');
       const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`);
 
-      // aria-label should be removed to prevent re-announcement
-      expect(dialogElement).not.toHaveAttribute('aria-label');
+      await expect(dialogElement).toHaveAttribute('aria-label', 'Test Dialog');
     });
 
-    it('EnchantedDialog - should remove aria-hidden from content wrapper after announcement', async () => {
-      render(
-        html`
-          <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
-            <div slot="content">
-              <input type="text" />
-            </div>
-          </enchanted-dialog>
-        `,
-        document.body
-      );
-
-      await browser.pause(150); // Wait for cleanup (100ms + 20ms)
-
-      const component = document.querySelector('enchanted-dialog');
-      const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`);
-      const contentWrapper = dialogElement?.querySelector('div[role="presentation"]');
-
-      // aria-hidden should be removed so content is accessible
-      expect(contentWrapper).not.toHaveAttribute('aria-hidden');
-    });
-
-    it('EnchantedDialog - refocusDialog() should re-announce dialog', async () => {
+    it('EnchantedDialog - refocusDialog() should focus first focusable element again', async () => {
       render(
         html`
           <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
             <div slot="content">
-              <input type="text" />
+              <input type="text" id="refocus-input" />
             </div>
           </enchanted-dialog>
         `,
         document.body
       );
 
-      // eslint-why refocusDialog is a public method not in the type definition
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const component = document.querySelector('enchanted-dialog') as any;
-      await browser.pause(150); // Wait for initial focus sequence
+      await browser.pause(150);
+      const component = document.querySelector('enchanted-dialog') as EnchantedDialog;
+      const inputElement = component?.querySelector('input[id="refocus-input"]') as HTMLElement;
 
-      // Call refocusDialog
+      // Blur the input
+      inputElement?.blur();
+      expect(document.activeElement).not.toBe(inputElement);
+
+      // Call refocusDialog to re-focus
       await component.refocusDialog();
 
-      await browser.pause(10); // Check immediately after refocus
-
-      const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`) as HTMLElement;
-
-      // Dialog should be focused again
-      const hasFocus = dialogElement === component?.shadowRoot?.activeElement;
-
-      expect(hasFocus).toBeTruthy();
-    });
-
-    it('EnchantedDialog - refocusDialog() should restore aria-label temporarily', async () => {
-      render(
-        html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
-            <div slot="content">
-              <input type="text" />
-            </div>
-          </enchanted-dialog>
-        `,
-        document.body
-      );
-
-      // eslint-why refocusDialog is a public method not in the type definition
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const component = document.querySelector('enchanted-dialog') as any;
-      await browser.pause(150); // Wait for initial cleanup
-
-      // Call refocusDialog and check immediately
-      await component.refocusDialog();
-
-      const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`);
-
-      // aria-label should be temporarily restored (check before cleanup at 100ms)
-      expect(dialogElement).toHaveAttribute('aria-label', 'Select an item');
-    });
-
-    it('EnchantedDialog - refocusDialog() should clean up attributes after announcement', async () => {
-      render(
-        html`
-          <enchanted-dialog dialogTitle="Select an item" open .localization=${localization}>
-            <div slot="content">
-              <input type="text" />
-            </div>
-          </enchanted-dialog>
-        `,
-        document.body
-      );
-
-      // eslint-why refocusDialog is a public method not in the type definition
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const component = document.querySelector('enchanted-dialog') as any;
-      await browser.pause(150); // Wait for initial sequence
-
-      // Call refocusDialog
-      await component.refocusDialog();
-      await browser.pause(150); // Wait for cleanup (100ms + 20ms)
-
-      const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`);
-
-      // aria-label should be removed again after refocus
-      expect(dialogElement).not.toHaveAttribute('aria-label');
+      // Input should be focused again
+      expect(document.activeElement).toBe(inputElement);
     });
 
     it('EnchantedDialog - refocusDialog() should not run if dialog is closed', async () => {
@@ -436,9 +330,7 @@ describe('EnchantedDialog component testing', () => {
         document.body
       );
 
-      // eslint-why refocusDialog is a public method not in the type definition
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const component = document.querySelector('enchanted-dialog') as any;
+      const component = document.querySelector('enchanted-dialog') as EnchantedDialog;
 
       // Attempt to refocus a closed dialog
       await component.refocusDialog();
@@ -449,7 +341,7 @@ describe('EnchantedDialog component testing', () => {
       expect(dialogElement).toBeFalsy();
     });
 
-    it('EnchantedDialog - should handle shadow DOM input focus correctly', async () => {
+    it('EnchantedDialog - should recursively focus into nested web component shadow DOM', async () => {
       render(
         html`
           <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
@@ -460,20 +352,16 @@ describe('EnchantedDialog component testing', () => {
         `,
         document.body
       );
-
-      await browser.pause(150); // Wait for focus sequence to complete
-
-      const component = await document.querySelector('enchanted-dialog');
-      // eslint-why accessing shadowRoot which is not in type definition
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const inputField = component?.shadowRoot?.querySelector('enchanted-textfield') as any;
+      await browser.pause(150);
+      const component = await document.querySelector('enchanted-dialog') as EnchantedDialog;
+      const inputField = component?.querySelector('enchanted-textfield') as HTMLElement | null;
       const shadowInput = inputField?.shadowRoot?.querySelector('input') as HTMLElement;
 
-      // Shadow DOM input should be focused
+      // Shadow DOM input should receive focus (recursive search through nested components)
       expect(shadowInput).toBe(inputField?.shadowRoot?.activeElement);
     });
 
-    it('EnchantedDialog - should remove role="dialog" after announcement to prevent VoiceOver context', async () => {
+    it('EnchantedDialog - should have role="dialog" and aria-modal for accessibility', async () => {
       render(
         html`
           <enchanted-dialog dialogTitle="Test Dialog" open .localization=${localization}>
@@ -484,15 +372,11 @@ describe('EnchantedDialog component testing', () => {
         `,
         document.body
       );
-
-      await browser.pause(150); // Wait for full sequence and cleanup
-
+      await browser.pause(150);
       const component = document.querySelector('enchanted-dialog');
       const dialogElement = component?.shadowRoot?.querySelector(`[part*="${DIALOG_PARTS.PAPER_XL}"]`);
-
-      // role="dialog" should be removed to prevent VoiceOver from announcing dialog context
-      expect(dialogElement).not.toHaveAttribute('role');
-      expect(dialogElement).not.toHaveAttribute('aria-label');
+      await expect(dialogElement).toHaveAttribute('role', 'dialog');
+      await expect(dialogElement).toHaveAttribute('aria-modal', 'true');
     });
 
     it('EnchantedDialog - should have proper ARIA attributes for accessibility', async () => {
@@ -530,13 +414,8 @@ describe('EnchantedDialog component testing', () => {
         document.body
       );
       let component = await $('enchanted-dialog').getElement();
-      
-      // Tab to focus the close button
-      await browser.keys(['Tab']);
-      await browser.pause(100);
       await browser.keys(['Enter']);
       await browser.pause(400);
-      
       await expect(component).not.toHaveAttribute('open');
     });
 
@@ -549,9 +428,6 @@ describe('EnchantedDialog component testing', () => {
       );
       let component = await $('enchanted-dialog').getElement();
       
-      // Tab to focus the close button
-      await browser.keys(['Tab']);
-      await browser.pause(100);
       await browser.keys([' ']);
       await browser.pause(400);
       
@@ -582,6 +458,92 @@ describe('EnchantedDialog component testing', () => {
       let component = await $('enchanted-dialog').getElement();
       
       await expect(component).toHaveText(customTitle);
+    });
+
+    it('EnchantedDialog - should support RTL layout for dialog title', async () => {
+      document.documentElement.dir = 'rtl';
+      
+      render(
+        html`
+          <enchanted-dialog open dialogTitle="Test Dialog RTL" .localization=${localization}>
+            <div slot="content">
+              <input type="text" />
+            </div>
+          </enchanted-dialog>
+        `,
+        document.body
+      );
+      await browser.pause(150);
+      
+      let component = await $('enchanted-dialog').getElement();
+      let titleRootRTL = await component.$(`>>>[part="${DIALOG_PARTS.TITLE_ROOT_RTL}"]`);
+      let titleTextRTL = await component.$(`>>>[part="${DIALOG_PARTS.TITLE_TEXT_RTL}"]`);
+      let closeIcon = await component.$(`>>>[part="${DIALOG_PARTS.ICON_CLOSE}"]`);
+      
+      await expect(titleRootRTL).toBeExisting();
+      await expect(titleTextRTL).toBeExisting();
+      await expect(closeIcon).toBeExisting();
+      
+      document.documentElement.dir = 'ltr';
+    });
+
+    it('EnchantedDialog - should focus element directly when depth >= MAX_FOCUS_DEPTH', async () => {
+      render(
+        html`
+          <enchanted-dialog open dialogTitle="Test Dialog" .localization=${localization}>
+            <div slot="content">
+              <input type="text" id="test-input" />
+            </div>
+          </enchanted-dialog>
+        `,
+        document.body
+      );
+      await browser.pause(150);
+      
+      const component = document.querySelector('enchanted-dialog') as EnchantedDialog;
+      const testInput = document.querySelector('input#test-input') as HTMLElement;
+      
+      testInput?.blur();
+      await expect(document.activeElement).not.toBe(testInput);
+      
+      const enchantedDialog = component as unknown as { _focusElement: (element: HTMLElement, depth: number) => void };
+      enchantedDialog._focusElement(testInput, 10);
+      
+      await expect(document.activeElement).toBe(testInput);
+    });
+
+    it('EnchantedDialog - should traverse renderRoot when element has no shadowRoot but has renderRoot', async () => {
+      render(
+        html`
+          <enchanted-dialog open dialogTitle="Test Dialog" .localization=${localization}>
+            <div slot="content"></div>
+          </enchanted-dialog>
+        `,
+        document.body
+      );
+      await browser.pause(150);
+      
+      const component = document.querySelector('enchanted-dialog') as EnchantedDialog;
+      
+      const mockRenderRoot = document.createElement('div').attachShadow({ mode: 'open' });
+      const focusableInRenderRoot = document.createElement('input');
+      focusableInRenderRoot.id = 'focusable-render-root';
+      mockRenderRoot.appendChild(focusableInRenderRoot);
+      
+      const mockElement = document.createElement('div');
+      Object.defineProperty(mockElement, 'shadowRoot', {
+        value: null,
+        configurable: true
+      });
+      Object.defineProperty(mockElement, 'renderRoot', {
+        value: mockRenderRoot,
+        configurable: true
+      });
+      
+      const enchantedDialog = component as unknown as { _focusElement: (element: HTMLElement, depth: number) => void };
+      enchantedDialog._focusElement(mockElement as unknown as HTMLElement, 0);
+      
+      await expect(mockRenderRoot.querySelector('input')).toBe(focusableInRenderRoot);
     });
   });
 });

@@ -140,7 +140,7 @@ const meta: Meta<EnchantedInputSelectProps> = {
       ?hiddenIcon=${args.hiddenIcon}
       ?showRemoveLabel=${args.showRemoveLabel}
       ariaLabel="${args.ariaLabel}"
-    ></enchanted-input-select>
+    ></enchanted-select>
   `;},
 };
 
@@ -167,18 +167,18 @@ export const AllStates: Story = {
       <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Default</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             .options=${[
               { id: '1', name: 'Option 1', value: '1' },
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">With Placeholder</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             placeholder="Pick one..."
             .options=${[
@@ -186,11 +186,11 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">With Selected Value</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             .selectedValue="2"
             .options=${[
@@ -198,11 +198,11 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Always Show Placeholder</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             placeholder="Choose one"
             .selectedValue="2"
@@ -212,11 +212,11 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Disabled</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             .options=${[
               { id: '1', name: 'Option 1', value: '1' },
@@ -224,11 +224,11 @@ export const AllStates: Story = {
               { id: '3', name: 'Option 3', value: '3' },
             ]}
             ?disabled=${true}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Disabled with Value</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             .selectedValue="2"
             .options=${[
@@ -237,11 +237,11 @@ export const AllStates: Story = {
               { id: '3', name: 'Option 3', value: '3' },
             ]}
             ?disabled=${true}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Hidden Label</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             ?hiddenLabel=${true}
             placeholder="Hidden label example"
@@ -250,11 +250,11 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">Hidden Icon</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             ?hiddenIcon=${true}
             .options=${[
@@ -262,11 +262,11 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">With Remove Label</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select an option"
             .selectedValue="2"
             ?showRemoveLabel=${true}
@@ -275,18 +275,18 @@ export const AllStates: Story = {
               { id: '2', name: 'Option 2', value: '2' },
               { id: '3', name: 'Option 3', value: '3' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">String Options</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select a fruit"
             .options=${['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
         <div style="width: 250px;">
           <div style="margin-bottom: 8px; font-weight: 500;">With ARIA Label</div>
-          <enchanted-input-select
+          <enchanted-select
             label="Select country"
             ariaLabel="Country selection dropdown"
             .options=${[
@@ -294,7 +294,7 @@ export const AllStates: Story = {
               { id: 'ca', name: 'Canada', value: 'ca' },
               { id: 'mx', name: 'Mexico', value: 'mx' },
             ]}
-          ></enchanted-input-select>
+          ></enchanted-select>
         </div>
       </div>
     `;

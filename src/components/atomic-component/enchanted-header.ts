@@ -65,7 +65,7 @@ export class EnchantedHeader extends EnchantedAcBaseElement {
     switch (variant) {
       case HEADER_VARIANT.HEADER_AUTHORING:
         return html`
-          <enchanted-input-textfield label=""
+          <enchanted-textfield label=""
             ?disabled="${this.disabled}"
             exportparts=${HEADER_PARTS.INPUT} 
             placeholder="${this.getMessage('header.enduser.search.placeholder')}"

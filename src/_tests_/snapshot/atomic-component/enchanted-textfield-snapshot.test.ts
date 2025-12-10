@@ -24,43 +24,48 @@ import { HEADER_PARTS } from '../../../types/cssClassEnums';
 import { appendEnchantedStylingLink, SNAPSHOT_WINDOW_HEIGHT, SNAPSHOT_WINDOW_WIDTH } from '../utils';
 
 // Icon imports
-import { svgIconClear } from '../../assets/svg-clear';
-import { svgIconSearch } from '../../assets/svg-search';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/close';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/search';
 
-const dxLocalization: Map<string, string> = new Map<string, string>();
-dxLocalization.set('input.textfield.placeholder.type.to.search', 'Type to search');
+const localization: Map<string, string> = new Map<string, string>();
+localization.set('input.textfield.placeholder.type.to.search', 'Type to search');
 
 function renderHtml() {
   return html`
     <div data-testid="enchanted-textfield-layout" style="display: flex; flex-direction: column; gap: 10px; padding: 10px;">
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>With placeholder</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} placeholder="test placeholder text"> </enchanted-textfield>
+        <enchanted-textfield .localization=${localization} exportparts=${HEADER_PARTS.INPUT} placeholder="test placeholder text"> </enchanted-textfield>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>With label</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} label="test label"> </enchanted-textfield>
+        <enchanted-textfield .localization=${localization} exportparts=${HEADER_PARTS.INPUT} label="test label"> </enchanted-textfield>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>With Label and Value</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} label="test label" value="test-value"> </enchanted-textfield>
+        <enchanted-textfield .localization=${localization} exportparts=${HEADER_PARTS.INPUT} label="test label" value="test-value"> </enchanted-textfield>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>with Start Icon</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} .iconStartUrl=${svgIconSearch}> </enchanted-textfield>
+        <enchanted-textfield .localization=${localization} exportparts=${HEADER_PARTS.INPUT} .actionIcon=${html`<icon-search size="16" color="currentColor"></icon-search>`}> </enchanted-textfield>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>with End Icon</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} .iconEndUrl=${svgIconClear}> </enchanted-textfield>
+        <enchanted-textfield .localization=${localization} exportparts=${HEADER_PARTS.INPUT} .clearIcon=${html`<icon-close size="16" color="currentColor"></icon-close>`}> </enchanted-textfield>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <label>with both Start and End Icon</label>
-        <enchanted-textfield .localization=${dxLocalization} exportparts=${HEADER_PARTS.INPUT} .iconStartUrl=${svgIconSearch} .iconEndUrl=${svgIconClear}>
+        <enchanted-textfield
+          .localization=${localization}
+          exportparts=${HEADER_PARTS.INPUT}
+          .actionIcon=${html`<icon-search size="16" color="currentColor"></icon-search>`}
+          .clearIcon=${html`<icon-close size="16" color="currentColor"></icon-close>`}
+        >
         </enchanted-textfield>
       </div>
     </div>

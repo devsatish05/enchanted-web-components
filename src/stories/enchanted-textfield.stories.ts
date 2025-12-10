@@ -13,8 +13,8 @@ import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/search';
  * @property label - The label for the textfield.
  * @property placeholder - The placeholder text for the textfield.
  * @property disabled - If true, disables the textfield.
- * @property clearIconUrl - The URL or SVG template for the clear icon.
- * @property actionIconUrl - The URL or SVG template for the action icon.
+ * @property clearIcon - The TemplateResult for the clear icon.
+ * @property actionIcon - The TemplateResult for the action icon.
  * @property field - Field type or name for the input textfield.
  * @property hassearchedbefore - If true, indicates a search has been performed.
  * @property autocomplete - Autocomplete attribute value ('on' or 'off').
@@ -26,8 +26,8 @@ export interface EnchantedInputTextfieldProps {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
-  clearIconUrl?: string | unknown;
-  actionIconUrl?: string | unknown;
+  clearIcon?: unknown;
+  actionIcon?: unknown;
   field?: string;
   hassearchedbefore?: boolean;
   autocomplete?: string;
@@ -72,13 +72,15 @@ const meta: Meta<EnchantedInputTextfieldProps> = {
       description: 'Disables the textfield, preventing user input and interaction. The field appears grayed out and does not accept focus or keyboard input.',
       table: { category: 'State', type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    clearIconUrl: {
+    clearIcon: {
       control: { type: 'object' },
-      description: 'URL or SVG template for the clear icon button. Displays when the field has content, allowing users to quickly clear the input value.',
+      description: 'The TemplateResult for the clear icon.',
+      table: { defaultValue: { summary: 'TemplateResult' } } 
     },
-    actionIconUrl: {
+    actionIcon: {
       control: { type: 'object' },
-      description: 'URL or SVG template for an action icon button. Commonly used for search icons or submit actions. Click events can be handled externally.',
+      description: 'The TemplateResult for the action icon.',
+      table: { defaultValue: { summary: 'TemplateResult' } } 
     },
     field: {
       control: { type: 'text' },
@@ -107,28 +109,31 @@ const meta: Meta<EnchantedInputTextfieldProps> = {
     label: 'Text Field',
     placeholder: 'Enter text',
     disabled: false,
-    clearIconUrl: html`<icon-close size="16" color="black"></icon-close>`,
-    actionIconUrl: html`<icon-search size="16" color="black"></icon-search>`,
+    clearIcon: html`<icon-close size="16" color="black"></icon-close>`,
+    actionIcon: html`<icon-search size="16" color="black"></icon-search>`,
     field: '',
     hassearchedbefore: false,
     autocomplete: 'on',
     ariaLabel: '',
   },
-  render: (args) => {return html`
-    <enchanted-textfield
-      .value=${args.value}
-      type="${args.type}"
-      label="${args.label}"
-      placeholder="${args.placeholder}"
-      ?disabled=${args.disabled}
-      .clearIconUrl=${args.clearIconUrl}
-      .actionIconUrl=${args.actionIconUrl}
-      field="${args.field}"
-      ?hassearchedbefore=${args.hassearchedbefore}
-      autocomplete="${args.autocomplete}"
-      aria-label="${args.ariaLabel}"
-    ></enchanted-textfield>
-  `;},
+  
+  render: (args) => {
+    return html`
+      <enchanted-textfield
+        .value=${args.value}
+        type="${args.type}"
+        label="${args.label}"
+        placeholder="${args.placeholder}"
+        ?disabled=${args.disabled}
+        .clearIcon=${args.clearIcon}
+        .actionIcon=${args.actionIcon}
+        field="${args.field}"
+        ?hassearchedbefore=${args.hassearchedbefore}
+        autocomplete="${args.autocomplete}"
+        aria-label="${args.ariaLabel}"
+      ></enchanted-textfield>
+    `;
+  },
 };
 
 export default meta;
@@ -202,7 +207,7 @@ export const AllStates: Story = {
           <enchanted-textfield
             label="Search"
             .value=${'Search query'}
-            .clearIconUrl=${html`<icon-close size="16" color="black"></icon-close>`}
+            .clearIcon=${html`<icon-close size="16" color="black"></icon-close>`}
           ></enchanted-textfield>
         </div>
         <div style="width: 250px;">
@@ -210,7 +215,7 @@ export const AllStates: Story = {
           <enchanted-textfield
             label="Search"
             placeholder="Search..."
-            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+            .actionIcon=${html`<icon-search size="16" color="black"></icon-search>`}
           ></enchanted-textfield>
         </div>
         <div style="width: 250px;">
@@ -218,8 +223,8 @@ export const AllStates: Story = {
           <enchanted-textfield
             label="Search Field"
             .value=${'Search term'}
-            .clearIconUrl=${html`<icon-close size="16" color="black"></icon-close>`}
-            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+            .clearIcon=${html`<icon-close size="16" color="black"></icon-close>`}
+            .actionIcon=${html`<icon-search size="16" color="black"></icon-search>`}
           ></enchanted-textfield>
         </div>
         <div style="width: 250px;">
@@ -252,7 +257,7 @@ export const AllStates: Story = {
             label="Search"
             placeholder="Type to search"
             aria-label="Search products in catalog"
-            .actionIconUrl=${html`<icon-search size="16" color="black"></icon-search>`}
+            .actionIcon=${html`<icon-search size="16" color="black"></icon-search>`}
           ></enchanted-textfield>
         </div>
         <div style="width: 250px;">

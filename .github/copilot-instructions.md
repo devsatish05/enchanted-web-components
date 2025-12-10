@@ -147,7 +147,7 @@ Use component names or affected areas:
 The library includes 30+ web components:
 - **Layout**: `enchanted-header`, `enchanted-header-layout`, `enchanted-search-center-layout`, `enchanted-panel`
 - **Navigation**: `enchanted-breadcrumbs`, `enchanted-breadcrumbs-item`, `enchanted-menu`, `enchanted-menu-item`
-- **Input**: `enchanted-button`, `enchanted-icon-button`, `enchanted-toggle-button`, `enchanted-switch`, `enchanted-input-textfield`, `enchanted-input-select`, `enchanted-multiple-select-chip`, `enchanted-datepicker`
+- **Input**: `enchanted-button`, `enchanted-icon-button`, `enchanted-toggle-button`, `enchanted-switch`, `enchanted-textfield`, `enchanted-select`, `enchanted-multiple-select-chip`, `enchanted-datepicker`
 - **Display**: `enchanted-avatar`, `enchanted-badge`, `enchanted-chip`, `enchanted-tooltip`, `enchanted-preview`, `enchanted-svg-icon`, `enchanted-item-type-avatar`
 - **Feedback**: `enchanted-alert`, `enchanted-snackbar`, `enchanted-dialog`, `enchanted-circular-progress`, `enchanted-popover`
 - **Data**: `enchanted-list`, `enchanted-list-item`, `enchanted-data-grid`, `enchanted-data-grid-generic`, `enchanted-table-pagination`

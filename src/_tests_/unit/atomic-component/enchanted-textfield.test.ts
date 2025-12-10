@@ -25,7 +25,7 @@ import { initSessionStorage } from '../../utils';
 import { EnchantedInputFieldType } from '../../../types/enchanted-select';
 
 // Icon imports
-import { svgIconClear } from '../../assets/svg-clear';
+import '@hcl-software/enchanted-icons-web-component/dist/carbon/es/close';
 
 const dxLocalization: Map<string, string> = new Map<string, string>();
 dxLocalization.set('input.textfield.placeholder.type.to.search', 'Type to search');
@@ -95,7 +95,7 @@ describe('EnchantedInputTextfield component testing', () => {
     let component = await $('enchanted-textfield').getElement();
     await expect(component).toBeDisplayed();
     // To get the label element
-    let labelElement = await component.$('>>>label[data-testid="enchanted-input-textfield-label"]').getElement();
+    let labelElement = await component.$('>>>label[data-testid="enchanted-textfield-label"]').getElement();
     await expect(labelElement).toHaveText('test-label');
     // To get the input element
     let inputElement = await component.$('>>>input[data-testid="enchanted-textfield-input"]').getElement();
@@ -123,7 +123,7 @@ describe('EnchantedInputTextfield component testing', () => {
           .localization=${dxLocalization}
           field=${EnchantedInputFieldType.QUERY_STRING}
           value="test-value"
-          .clearIconUrl=${svgIconClear}
+          .clearIcon=${html`<icon-close size="16" color="currentColor"></icon-close>`}
         ></enchanted-textfield>
         <button type="button">Click Me!</button>
       `,
@@ -132,7 +132,7 @@ describe('EnchantedInputTextfield component testing', () => {
     let component = await $('enchanted-textfield').getElement();
     await expect(component).toBeDisplayed();
 
-    let clearIcon = await $('>>>enchanted-svg-icon[data-testid="enchanted-clear-icon"]').getElement();
+    let clearIcon = await $('>>>div[data-testid="enchanted-clear-icon"]').getElement();
     clearIcon.click();
     // To get the input element
     let inputElement = await component.$('>>>input[data-testid="enchanted-textfield-input"]').getElement();
@@ -149,7 +149,7 @@ describe('EnchantedInputTextfield component testing', () => {
           .localization=${dxLocalization}
           field=${EnchantedInputFieldType.QUERY_STRING}
           value="test-value"
-          .clearIconUrl=${svgIconClear}
+          .clearIcon=${html`<icon-close size="16" color="currentColor"></icon-close>`}
         ></enchanted-textfield>
         <button type="button">Click Me!</button>
       `,
