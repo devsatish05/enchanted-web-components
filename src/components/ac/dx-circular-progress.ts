@@ -13,76 +13,157 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 // External imports
-import { customElement, property, state } from 'lit/decorators.js';
-import { html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { html, css } from 'lit';
 
 // Component imports
 import { DxAcBaseElement } from '../ac/dx-ac-base-element';
 
+/**
+ * CircularProgress component - Indeterminate variant
+ * Displays an animated circular progress indicator with track and progress colors
+ * Based on Material UI's CircularProgress component
+ */
 @customElement('dx-circular-progress')
 export class DxCircularProgress extends DxAcBaseElement {
-  // properties user may control as element attributes
-  @property({ type: Number }) size = 100;
-  @property({ type: Number }) strokewidth = 4;
-  @property({ type: String }) trailcolor = '#D6D6D6'; // equivalent to $NG200 in ac.scss
-  @property({ type: String }) valuecolor = '#0550DC'; // equivalent to $HCLSOFTWAREBLUE06 in ac.scss
+  static styles = css`
+    :host {
+      display: inline-block;
+    }
 
-  // internal state to be computed from user-given properties
-  @state() radius = 0;
-  @state() circumference = 0;
-  @state() cx = 0;
-  @state() cy = 0;
-  @state() durationToRotate = 2;
-  @state() height = 0;
-  @state() width = 0;
+    .dx-circular-progress-root {
+      display: inline-block;
+      line-height: 1;
+    }
 
+    .dx-circular-progress-svg {
+      display: block;
+      animation: dx-circular-rotate 1.4s linear infinite;
+    }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.height = this.size;
-    this.width = this.size;
-    this.cx = this.size / 2;
-    this.cy = this.size / 2;
-    this.radius = (this.cx / 2) - this.strokewidth;
-    this.circumference = 2 * Math.PI * this.radius;
+    .dx-circular-progress-track {
+      opacity: 1;
+    }
+
+    .dx-circular-progress-circle {
+      stroke-dasharray: 80px, 200px;
+      stroke-dashoffset: 0;
+      animation: dx-circular-dash 1.4s ease-in-out infinite;
+    }
+
+    .dx-circular-progress-circle.disable-shrink {
+      animation: dx-circular-rotate 1.4s linear infinite;
+    }
+
+    @keyframes dx-circular-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes dx-circular-dash {
+      0% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 100px, 200px;
+        stroke-dashoffset: -15px;
+      }
+      100% {
+        stroke-dasharray: 100px, 200px;
+        stroke-dashoffset: -125px;
+      }
+    }
+  `;
+
+  /**
+   * Size of the circular progress in pixels
+   * @default 40
+   */
+  @property({ type: Number }) size = 40;
+
+  /**
+   * Stroke width of the progress circle in pixels
+   * @default 3.6
+   */
+  @property({ type: Number }) strokewidth = 3.6;
+
+  /**
+   * Color of the track (background circle)
+   * @default 'rgba(0, 0, 0, 0.12)'
+   */
+  @property({ type: String }) trackcolor = 'rgba(0, 0, 0, 0.12)';
+
+  /**
+   * Color of the progress indicator
+   * @default '#1976d2'
+   */
+  @property({ type: String }) progresscolor = '#1976d2';
+
+  /**
+   * Disables the shrink animation for performance in high CPU load scenarios
+   * @default false
+   */
+  @property({ type: Boolean }) disableshrink = false;
+
+  /**
+   * Get the circumference of the circle
+   */
+  private get circumference(): number {
+    return 2 * Math.PI * this.radius;
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
+  /**
+   * Get the radius of the circle
+   */
+  private get radius(): number {
+    return (this.size - this.strokewidth) / 2;
   }
 
-  render() {   
+  /**
+   * Get the viewBox size
+   */
+  private get viewBoxSize(): number {
+    return this.size + this.strokewidth;
+  }
+
+  render() {
+    const dashLength = this.disableshrink ? this.circumference * 0.8 : undefined;
+    const dashGap = this.disableshrink ? this.circumference * 0.2 : undefined;
+
     return html`
-      <div style="height: ${this.size}px; width: ${this.size}px;">
-        <svg style="height: ${this.size}px; width: ${this.size}px; position: relative; animation: rotateCircularProgress 2s linear infinite;">
+      <div class="dx-circular-progress-root" style="width: ${this.size}px; height: ${this.size}px;">
+        <svg
+          class="dx-circular-progress-svg"
+          viewBox="${this.viewBoxSize / 2} ${this.viewBoxSize / 2} ${this.viewBoxSize} ${this.viewBoxSize}"
+        >
+          <!-- Track circle (background) -->
           <circle
-            cx="${this.cx}"
-            cy="${this.cy}"
+            class="dx-circular-progress-track"
+            cx="${this.viewBoxSize}"
+            cy="${this.viewBoxSize}"
             r="${this.radius}"
             fill="none"
-            stroke-width="${this.strokewidth}" 
-            stroke="${this.trailcolor}"
-          >
-          </circle>
+            stroke="${this.trackcolor}"
+            stroke-width="${this.strokewidth}"
+          />
+          <!-- Progress circle -->
           <circle
-            cx="${this.cx}"
-            cy="${this.cy}"
+            class="dx-circular-progress-circle ${this.disableshrink ? 'disable-shrink' : ''}"
+            cx="${this.viewBoxSize}"
+            cy="${this.viewBoxSize}"
             r="${this.radius}"
             fill="none"
-            stroke-width="${this.strokewidth}" 
-            stroke-miterlimit="0"
-            stroke-linecap="round"
-            stroke="${this.valuecolor}"
-            stroke-dasharray="0,${this.circumference}"
+            stroke="${this.progresscolor}"
+            stroke-width="${this.strokewidth}"
+            stroke-dasharray="${dashLength !== undefined ? `${dashLength} ${dashGap}` : `${this.circumference * 0.8} ${this.circumference * 0.2}`}"
             stroke-dashoffset="0"
-          >
-          <animate
-            attributeName="stroke-dasharray"
-            values="0;${this.circumference}"
-            dur="${this.durationToRotate}s"
-            repeatCount="indefinite"
-          ></animate>
-          </circle>
+            stroke-linecap="round"
+          />
         </svg>
       </div>
     `;

@@ -14,9 +14,58 @@
  * ======================================================================== */
 
 @mixin dx-circular-progress-base-styles {
-  @keyframes rotateCircularProgress {
+  // Root container styles
+  .dx-circular-progress-root {
+    display: inline-block;
+    line-height: 1;
+  }
+
+  // SVG container
+  .dx-circular-progress-svg {
+    display: block;
+    animation: dx-circular-rotate 1.4s linear infinite;
+  }
+
+  // Track circle (background)
+  .dx-circular-progress-track {
+    opacity: 1;
+  }
+
+  // Progress circle with animation
+  .dx-circular-progress-circle {
+    stroke-dasharray: 80px, 200px;
+    stroke-dashoffset: 0;
+    animation: dx-circular-dash 1.4s ease-in-out infinite;
+  }
+
+  // Disable shrink variant (static dash array)
+  .dx-circular-progress-circle.disable-shrink {
+    animation: none;
+  }
+
+  // Rotation animation
+  @keyframes dx-circular-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
     100% {
       transform: rotate(360deg);
+    }
+  }
+
+  // Dash animation (shrink and grow effect)
+  @keyframes dx-circular-dash {
+    0% {
+      stroke-dasharray: 1px, 200px;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 100px, 200px;
+      stroke-dashoffset: -15px;
+    }
+    100% {
+      stroke-dasharray: 100px, 200px;
+      stroke-dashoffset: -125px;
     }
   }
 }
