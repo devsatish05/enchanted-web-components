@@ -24,6 +24,19 @@ All type, enum and interface have been renamed from `DX*` prefix to `Enchanted*`
 
 - Refactored folder structure: renamed `ac` directories to `atomic-component` across the codebase.
 
+#### SCSS File and Styling Prefix Renaming
+
+All SCSS files in `src/styles/enchanted/components/atomic-component/` have been renamed from `dx-*.scss` to `enchanted-*.scss`:
+
+- Renamed all component SCSS files to use `enchanted-` prefix instead of `dx-` prefix
+- Updated all mixin names from `dx-*-base-styles` to `enchanted-*-base-styles` across all component stylesheets
+- Updated all CSS part selectors and class references to use `enchanted-` prefix for consistency
+
+**Examples:**
+- `dx-button.scss` → `enchanted-button.scss` with mixin `enchanted-button-base-styles`
+- `dx-preview.scss` → `enchanted-preview.scss` with mixin `enchanted-preview-base-styles`
+- `dx-select.scss` → `enchanted-select.scss` with mixin `enchanted-select-base-styles`
+
 #### Web Component Renaming
 
 All web components have been renamed from `dx-*` prefix to `enchanted-*` prefix:
