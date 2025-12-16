@@ -72,13 +72,13 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
     }
 
     .enchanted-circular-progress-circle {
-      stroke-dasharray: 1px, 200px;
+      stroke-dasharray: var(--stroke-dasharray-start);
       stroke-dashoffset: 0;
       animation: enchanted-circular-dash 1.4s ease-in-out infinite;
     }
 
     .enchanted-circular-progress-circle.disable-shrink {
-      stroke-dasharray: 80px, 200px;
+      stroke-dasharray: var(--stroke-dasharray-shrink);
       animation: none;
     }
 
@@ -93,16 +93,16 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
 
     @keyframes enchanted-circular-dash {
       0% {
-        stroke-dasharray: 1px, 200px;
+        stroke-dasharray: var(--stroke-dasharray-start);
         stroke-dashoffset: 0;
       }
       50% {
-        stroke-dasharray: 100px, 200px;
-        stroke-dashoffset: -15px;
+        stroke-dasharray: var(--stroke-dasharray-mid);
+        stroke-dashoffset: var(--stroke-dashoffset-mid);
       }
       100% {
-        stroke-dasharray: 100px, 200px;
-        stroke-dashoffset: -125px;
+        stroke-dasharray: var(--stroke-dasharray-end);
+        stroke-dashoffset: var(--stroke-dashoffset-end);
       }
     }
   `;
@@ -160,11 +160,35 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
     return this.size / 2;
   }
 
+  /**
+   * Get the circumference of the circle
+   * Used to calculate proper stroke-dasharray values
+   */
+  private get circumference(): number {
+    return 2 * Math.PI * this.radius;
+  }
+
+  /**
+   * Get the CSS variable definitions for animation
+   * These values scale with the circle size for proper animation
+   */
+  private get animationStyles(): string {
+    const circ = this.circumference;
+    return `
+      --stroke-dasharray-start: ${circ * 0.01}px, ${circ}px;
+      --stroke-dasharray-mid: ${circ * 0.5}px, ${circ}px;
+      --stroke-dasharray-end: ${circ * 0.5}px, ${circ}px;
+      --stroke-dashoffset-mid: ${circ * -0.075}px;
+      --stroke-dashoffset-end: ${circ * -0.625}px;
+      --stroke-dasharray-shrink: ${circ * 0.4}px, ${circ}px;
+    `;
+  }
+
   render() {
     const circleClasses = `enchanted-circular-progress-circle${this.disableShrink ? ' disable-shrink' : ''}`;
     
     return html`
-      <div class="enchanted-circular-progress-root" style="width: ${this.size}px; height: ${this.size}px;">
+      <div class="enchanted-circular-progress-root" style="width: ${this.size}px; height: ${this.size}px; ${this.animationStyles}">
         <svg
           class="enchanted-circular-progress-svg"
           viewBox="${this.viewBox}"
