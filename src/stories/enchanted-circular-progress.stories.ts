@@ -27,19 +27,25 @@ const meta: Meta = {
       description: 'Color of the progress indicator',
       defaultValue: '#0550DC',
     },
+    disableShrink: {
+      control: { type: 'boolean' },
+      description: 'Disables the shrink animation for high CPU scenarios',
+      defaultValue: false,
+    },
   },
   args: {
     size: 40,
     strokewidth: 3.6,
     trackcolor: '#D6D6D6',
     progresscolor: '#0550DC',
+    disableShrink: false,
   },
   parameters: {
     docs: {
       description: {
-        component: 'Enchanted Circular progress component - Indeterminate variant. Displays an animated circular progress indicator '
+        component: 'Enchanted Circular Progress component - Indeterminate variant. Displays an animated circular progress indicator '
           + 'with separate track and progress colors, inspired by Material UI CircularProgress. '
-          + 'Use the controls below to adjust size, colors, and disable shrink animation.'
+          + 'Features smooth rotation and dash animations. Use disable-shrink for high CPU load scenarios.'
       }
     }
   }
@@ -52,6 +58,7 @@ type Story = StoryObj<{
   strokewidth: number;
   trackcolor: string;
   progresscolor: string;
+  disableShrink: boolean;
 }>;
 
 /**
@@ -59,9 +66,10 @@ type Story = StoryObj<{
  * 
  * Use the controls panel to:
  * - Adjust the size (20-200px)
+ * - Modify stroke width
  * - Change the progress color
  * - Customize the track (background) color
- * - Toggle the shrink animation on/off for performance optimization
+ * - Toggle the shrink animation for performance optimization
  */
 export const Default: Story = {
   render: (args) => {
@@ -71,6 +79,7 @@ export const Default: Story = {
         .strokewidth=${args.strokewidth}
         .trackcolor=${args.trackcolor}
         .progresscolor=${args.progresscolor}
+        ?disable-shrink=${args.disableShrink}
       ></enchanted-circular-progress>
     `;
   },
@@ -80,7 +89,7 @@ export const AllStates: Story = {
   render: () => {
     const gridStyle = [
       'display: grid',
-      'grid-template-columns: repeat(2, 1fr)',
+      'grid-template-columns: repeat(3, 1fr)',
       'gap: 48px',
       'padding: 40px',
       'min-height: 400px',
@@ -112,12 +121,20 @@ export const AllStates: Story = {
           <enchanted-circular-progress size="100" strokewidth="3.6" trackcolor="#D6D6D6" progresscolor="#0550DC"></enchanted-circular-progress>
         </div>
         <div style="${itemContainerStyle}">
+          <span style="${labelStyle}">Small Size</span>
+          <enchanted-circular-progress size="30" strokewidth="3.6" trackcolor="#D6D6D6" progresscolor="#0550DC"></enchanted-circular-progress>
+        </div>
+        <div style="${itemContainerStyle}">
           <span style="${labelStyle}">Custom Colors</span>
-          <enchanted-circular-progress size="40" strokewidth="3.6" trackcolor="#D6D6D6" progresscolor="#e61010"></enchanted-circular-progress>
+          <enchanted-circular-progress size="40" strokewidth="3.6" trackcolor="#FFE5E5" progresscolor="#e61010"></enchanted-circular-progress>
         </div>
         <div style="${itemContainerStyle}">
           <span style="${labelStyle}">Thick Stroke</span>
           <enchanted-circular-progress size="40" strokewidth="8" trackcolor="#D6D6D6" progresscolor="#0550DC"></enchanted-circular-progress>
+        </div>
+        <div style="${itemContainerStyle}">
+          <span style="${labelStyle}">Disable Shrink</span>
+          <enchanted-circular-progress size="40" strokewidth="3.6" trackcolor="#D6D6D6" progresscolor="#0550DC" disable-shrink></enchanted-circular-progress>
         </div>
       </div>
     `;
@@ -125,7 +142,8 @@ export const AllStates: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comprehensive showcase of all main visual states: default, large, custom colors, and thick stroke. Demonstrates appearance and customization options for enchanted-circular-progress.'
+        story: 'Comprehensive showcase of all main visual states: default, large, small, custom colors, thick stroke, and disable-shrink mode. '
+          + 'The disable-shrink variant maintains a constant stroke length and is useful for high CPU load scenarios.'
       }
     },
     controls: { disable: true },

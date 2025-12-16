@@ -14,36 +14,42 @@
  * ======================================================================== */
 
 @mixin enchanted-circular-progress-base-styles {
+  // Host element
+  :host {
+    display: inline-block;
+  }
+
   // Root container styles
   .enchanted-circular-progress-root {
     display: inline-block;
     line-height: 1;
   }
 
-  // SVG container
+  // SVG container with rotation animation
   .enchanted-circular-progress-svg {
     display: block;
     animation: enchanted-circular-rotate 1.4s linear infinite;
   }
 
-  // Track circle (background)
+  // Track circle (background) - static, no animation
   .enchanted-circular-progress-track {
     opacity: 1;
   }
 
-  // Progress circle with animation
+  // Progress circle with dash animation (indeterminate)
   .enchanted-circular-progress-circle {
-    stroke-dasharray: 80px, 200px;
+    stroke-dasharray: 1px, 200px;
     stroke-dashoffset: 0;
     animation: enchanted-circular-dash 1.4s ease-in-out infinite;
   }
 
-  // Disable shrink variant (static dash array)
+  // Disable shrink variant (static dash array for high CPU scenarios)
   .enchanted-circular-progress-circle.disable-shrink {
+    stroke-dasharray: 80px, 200px;
     animation: none;
   }
 
-  // Rotation animation
+  // Rotation animation - spins the entire SVG
   @keyframes enchanted-circular-rotate {
     0% {
       transform: rotate(0deg);
@@ -53,7 +59,8 @@
     }
   }
 
-  // Dash animation (shrink and grow effect)
+  // Dash animation - creates the shrink and grow effect
+  // Matches MUI's indeterminate animation behavior
   @keyframes enchanted-circular-dash {
     0% {
       stroke-dasharray: 1px, 200px;

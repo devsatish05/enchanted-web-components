@@ -14,7 +14,7 @@
  * ======================================================================== */
 // External imports
 import { customElement, property } from 'lit/decorators.js';
-import { html, css } from 'lit';
+import { css, html } from 'lit';
 
 // Component imports
 import { EnchantedAcBaseElement } from './enchanted-ac-base-element';
@@ -45,6 +45,17 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
       opacity: 1;
     }
 
+    .enchanted-circular-progress-circle {
+      stroke-dasharray: 1px, 200px;
+      stroke-dashoffset: 0;
+      animation: enchanted-circular-dash 1.4s ease-in-out infinite;
+    }
+
+    .enchanted-circular-progress-circle.disable-shrink {
+      stroke-dasharray: 80px, 200px;
+      animation: none;
+    }
+
     @keyframes enchanted-circular-rotate {
       0% {
         transform: rotate(0deg);
@@ -56,19 +67,22 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
 
     @keyframes enchanted-circular-dash {
       0% {
+        stroke-dasharray: 1px, 200px;
         stroke-dashoffset: 0;
       }
       50% {
+        stroke-dasharray: 100px, 200px;
         stroke-dashoffset: -15px;
       }
       100% {
+        stroke-dasharray: 100px, 200px;
         stroke-dashoffset: -125px;
       }
     }
   `;
 
   /**
-   * Size of the enchanted circular progress in pixels
+   * Size of the circular progress in pixels
    * @default 40
    */
   @property({ type: Number }) size = 40;
@@ -81,22 +95,23 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
 
   /**
    * Color of the track (background circle)
+   * Equivalent to $NG200 in enchanted styles
    * @default '#D6D6D6'
    */
-  @property({ type: String }) trackcolor = '#D6D6D6'; // equivalent to $NG200 in ac.scss
+  @property({ type: String }) trackcolor = '#D6D6D6';
 
   /**
    * Color of the progress indicator
+   * Equivalent to $HCLSOFTWAREBLUE06 in enchanted styles
    * @default '#0550DC'
    */
-  @property({ type: String }) progresscolor = '#0550DC'; // equivalent to $HCLSOFTWAREBLUE06 in ac.scss
+  @property({ type: String }) progresscolor = '#0550DC';
 
   /**
-   * Get the circumference of the circle
+   * Disables the shrink animation (keeps constant stroke length)
+   * @default false
    */
-  private get circumference(): number {
-    return 2 * Math.PI * this.radius;
-  }
+  @property({ type: Boolean, attribute: 'disable-shrink' }) disableShrink = false;
 
   /**
    * Get the radius of the circle
@@ -106,41 +121,49 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
   }
 
   /**
-   * Get the viewBox size
+   * Get the viewBox dimensions
    */
-  private get viewBoxSize(): number {
-    return this.size + this.strokewidth;
+  private get viewBox(): string {
+    return `0 0 ${this.size} ${this.size}`;
+  }
+
+  /**
+   * Get the center coordinates of the circle
+   */
+  private get center(): number {
+    return this.size / 2;
   }
 
   render() {
-    const dashLength = this.circumference * 0.8;
-    const gapLength = this.circumference - dashLength;
+    const circleClasses = `enchanted-circular-progress-circle${this.disableShrink ? ' disable-shrink' : ''}`;
+    
     return html`
       <div class="enchanted-circular-progress-root" style="width: ${this.size}px; height: ${this.size}px;">
         <svg
           class="enchanted-circular-progress-svg"
-          viewBox="${this.viewBoxSize / 2} ${this.viewBoxSize / 2} ${this.viewBoxSize} ${this.viewBoxSize}"
+          viewBox="${this.viewBox}"
+          role="progressbar"
+          aria-label="Loading"
         >
           <!-- Track circle (background) -->
           <circle
             class="enchanted-circular-progress-track"
-            cx="${this.viewBoxSize}"
-            cy="${this.viewBoxSize}"
+            cx="${this.center}"
+            cy="${this.center}"
             r="${this.radius}"
             fill="none"
             stroke="${this.trackcolor}"
             stroke-width="${this.strokewidth}"
           />
-          <!-- Progress circle -->
+          <!-- Progress circle (animated) -->
           <circle
-            class="enchanted-circular-progress-circle"
-            cx="${this.viewBoxSize}"
-            cy="${this.viewBoxSize}"
+            class="${circleClasses}"
+            cx="${this.center}"
+            cy="${this.center}"
             r="${this.radius}"
             fill="none"
             stroke="${this.progresscolor}"
             stroke-width="${this.strokewidth}"
-            stroke-dasharray="${dashLength}, ${gapLength}"
             stroke-linecap="round"
           />
         </svg>
