@@ -418,7 +418,7 @@ describe('EnchantedPopover - Snapshot testing', () => {
     document.head.removeChild(link);
   });
 
-  it('EnchantedPopover - should capture popover with withpadding enabled', async () => {
+  it('EnchantedPopover - should capture popover with padding enabled', async () => {
     const link = appendEnchantedStylingLink();
 
     render(
