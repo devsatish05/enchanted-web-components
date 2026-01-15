@@ -42,6 +42,14 @@ const meta: Meta = {
         defaultValue: { summary: '' },
       },
     },
+    alertTitle: {
+      control: { type: 'text' },
+      description: 'Optional title text to display above the message',
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
     width: {
       control: { type: 'number', min: 100, max: 1000, step: 10 },
       description: 'Width of the alert in pixels',
@@ -70,7 +78,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<{ message: string; severity: string; variant: string; width: number }>;
+type Story = StoryObj<{ message: string; severity: string; variant: string; width: number; alertTitle?: string }>;
 
 export const EnchantedAlert: Story = {
   render: (args) => {
@@ -80,6 +88,7 @@ export const EnchantedAlert: Story = {
         .severity=${args.severity} 
         .variant=${args.variant}
         .width=${args.width}
+        .alertTitle=${args.alertTitle}
       ></enchanted-alert>
     `;
   },
