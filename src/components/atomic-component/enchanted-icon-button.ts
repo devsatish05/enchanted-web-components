@@ -1,5 +1,5 @@
 /* ======================================================================== *
- * Copyright 2025 HCL America Inc.                                          *
+ * Copyright 2025, 2026 HCL America Inc.                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
  * You may obtain a copy of the License at                                  *
@@ -21,8 +21,9 @@ import { EnchantedAcBaseElement } from './enchanted-ac-base-element';
 import './enchanted-button';
 
 // Helper imports
-import { ICON_BUTTON_SIZES } from '../../types/cssClassEnums';
+import { ARIA_ROLES, ICON_BUTTON_SIZES } from '../../types/cssClassEnums';
 import { ICON_BUTTON_EXPORT_PARTS } from '../exportParts';
+import { KeyboardInputKeys } from '../../utils/keyboardEventKeys';
 
 @customElement('enchanted-icon-button')
 export class EnchantedIconButton extends EnchantedAcBaseElement {
@@ -57,7 +58,7 @@ export class EnchantedIconButton extends EnchantedAcBaseElement {
   inverseColor = false;
 
   @property({ type: String })
-  ariaLabel: string = '';
+  ariaLabel: string = 'Icon button'; // Provide a default accessible name
 
   public _focusButton() {
     const button = this.renderRoot.querySelector('enchanted-button');
@@ -76,11 +77,21 @@ export class EnchantedIconButton extends EnchantedAcBaseElement {
         exportparts=${ICON_BUTTON_EXPORT_PARTS}
         ?disabled=${this.disabled}
         .icon=${this.icon}
-        ariaLabel=${this.ariaLabel}
+        aria-label=${this.ariaLabel} // Ensure aria-label is passed correctly
+        role=${ARIA_ROLES.BUTTON}
+        aria-disabled="${this.disabled ? 'true' : 'false'}" // Communicate disabled state
         @click=${this._handleClick}
+        @keydown=${this._handleKeyDown} // Add keyboard event listener
         >
         </enchanted-button>
       `;
+  }
+
+  private _handleKeyDown(event: KeyboardEvent) {
+    if ((event.key === KeyboardInputKeys.ENTER || event.key === KeyboardInputKeys.SPACE) && !this.disabled) {
+      event.preventDefault();
+      this._handleClick(event);
+    }
   }
 }
 

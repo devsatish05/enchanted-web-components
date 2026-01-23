@@ -1,5 +1,5 @@
 /* ======================================================================== *
- * Copyright 2025 HCL America Inc.                                          *
+ * Copyright 2025, 2026 HCL America Inc.                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
  * You may obtain a copy of the License at                                  *
@@ -20,9 +20,10 @@ import { html, nothing, TemplateResult } from 'lit';
 import { EnchantedAcBaseElement } from './enchanted-ac-base-element';
 
 // Helper imports
-import { BUTTON_PARTS, BUTTON_VARIANT, ICON_BUTTON_SIZES } from '../../types/cssClassEnums';
+import { BUTTON_PARTS, BUTTON_VARIANT, ICON_BUTTON_SIZES, ARIA_ROLES } from '../../types/cssClassEnums';
 import { getCurrentDirection } from '../localization';
 import { LOCALE_DIRECTIONS } from '../constants';
+import { KeyboardInputKeys } from '../../utils/keyboardEventKeys';
 
 @customElement('enchanted-button')
 export class EnchantedButton extends EnchantedAcBaseElement {
@@ -193,9 +194,12 @@ export class EnchantedButton extends EnchantedAcBaseElement {
         ?disabled=${this.disabled || nothing}
         @focus=${() => {return this.focused = true;}}
         @blur=${() => {return this.focused = false;}}
-        aria-label=${this.ariaLabel}
-        aria-haspopup=${this.ariaHasPopup}
-        ${this.ariaExpanded ? `aria-expanded="${this.ariaExpanded}"` : nothing}
+        @keydown=${this.handleKeyDown}
+        aria-label=${this.ariaLabel || 'Button'}
+        aria-haspopup=${this.ariaHasPopup || nothing}
+        aria-expanded=${this.ariaExpanded || nothing}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
+        role=${ARIA_ROLES.BUTTON}
         tabindex="0"
       >
         ${this.endicon ? nothing : this.renderIcon(this.endicon)}
@@ -207,6 +211,14 @@ export class EnchantedButton extends EnchantedAcBaseElement {
         ${this.endicon ? this.renderIcon(this.endicon) : nothing}
       </button>
     `;
+  }
+
+  private handleKeyDown(event: KeyboardEvent) {
+    if ((event.key === KeyboardInputKeys.ENTER || event.key === KeyboardInputKeys.SPACE) && !this.disabled) {
+      event.preventDefault();
+      this._focusButton();
+      this.dispatchEvent(new Event('click', { bubbles: true, composed: true }));
+    }
   }
 }
 
