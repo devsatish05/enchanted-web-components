@@ -113,10 +113,10 @@
   &::part(alert-content) {
     display: flex;
     flex-direction: column;
+    gap: 4px;
   }
 
   &::part(alert-title) {
     font-weight: 700;
-    margin-bottom: 4px;
   }
 }
