@@ -180,8 +180,8 @@ describe('EnchantedCircularProgress component testing', () => {
 
     let svgElement = await component.$('>>>svg').getElement();
     let progressCircle = await svgElement.$('>>>circle.enchanted-circular-progress-circle').getElement();
-    let classValue = await progressCircle.getAttribute('class');
-    await expect(classValue).toContain('disable-shrink');
+    let partValue = await progressCircle.getAttribute('part');
+    await expect(partValue).toContain('disable-shrink');
   });
 
   it('EnchantedCircularProgress - should render component without disable-shrink class by default', async () => {
@@ -196,9 +196,9 @@ describe('EnchantedCircularProgress component testing', () => {
 
     let svgElement = await component.$('>>>svg').getElement();
     let progressCircle = await svgElement.$('>>>circle.enchanted-circular-progress-circle').getElement();
-    let classValue = await progressCircle.getAttribute('class');
-    await expect(classValue).not.toContain('disable-shrink');
-    await expect(classValue).toBe('enchanted-circular-progress-circle');
+    let partValue = await progressCircle.getAttribute('part');
+    await expect(partValue).not.toContain('disable-shrink');
+    await expect(partValue).toBe('circle');
   });
 
   it('EnchantedCircularProgress - should render component with all custom properties', async () => {
@@ -237,8 +237,8 @@ describe('EnchantedCircularProgress component testing', () => {
     let progressCircle = await svgElement.$('>>>circle.enchanted-circular-progress-circle').getElement();
     await expect(progressCircle).toHaveAttribute('stroke', '#FF6600');
     await expect(progressCircle).toHaveAttribute('stroke-width', '6');
-    let classValue = await progressCircle.getAttribute('class');
-    await expect(classValue).toContain('disable-shrink');
+    let partValue = await progressCircle.getAttribute('part');
+    await expect(partValue).toContain('disable-shrink');
   });
 
   it('EnchantedCircularProgress - should update properties dynamically', async () => {

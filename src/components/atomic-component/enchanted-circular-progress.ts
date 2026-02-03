@@ -187,6 +187,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
             />
             <!-- Progress circle (animated) -->
             <circle
+              class="enchanted-circular-progress-circle"
               part="${part}"
               cx="${this.center}"
               cy="${this.center}"
