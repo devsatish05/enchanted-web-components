@@ -197,6 +197,8 @@ export enum CIRCULAR_PROGRESS_PARTS {
   TRACK = 'circular-progress-track',
   CIRCLE = 'circular-progress-circle',
   CIRCLE_DISABLE_SHRINK = 'circular-progress-circle-disable-shrink',
+  LABEL = 'circular-progress-label',
+  SPINNER = 'circular-progress-spinner'
 }
 
 export enum DIALOG_PARTS {

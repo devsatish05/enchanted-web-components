@@ -18,6 +18,7 @@ import { css, html } from 'lit';
 
 // Component imports
 import { EnchantedAcBaseElement } from './enchanted-ac-base-element';
+import { CIRCULAR_PROGRESS_PARTS } from '../../types/cssClassEnums';
 
 /**
  * EnchantedCircularProgress component - Indeterminate variant
@@ -27,21 +28,11 @@ import { EnchantedAcBaseElement } from './enchanted-ac-base-element';
 @customElement('enchanted-circular-progress')
 export class EnchantedCircularProgress extends EnchantedAcBaseElement {
   /**
-   * Inline styles are required for this component due to Shadow DOM encapsulation.
+   * Inline styles for @keyframes only.
    * 
-   * IMPORTANT: Unlike other components that use external SCSS with ::part() selectors,
-   * this component MUST use inline `static styles` because:
-   * 
-   * 1. **CSS Animations in Shadow DOM**: The @keyframes animations (enchanted-circular-rotate 
-   *    and enchanted-circular-dash) must be defined in the same stylesheet where they are 
-   *    referenced. External CSS cannot inject animations into Shadow DOM.
-   * 
-   * 2. **Shadow Boundary Limitation**: External stylesheets (even with ::part() selectors) 
-   *    cannot penetrate the Shadow DOM boundary to apply animations to internal elements.
-   * 
-   * 3. **Design Tokens Centralized**: Non-animated tokens (colors, spacing, typography) are
-   *    now centralized in SCSS (enchanted-circular-progress.scss) and exposed via CSS custom
-   *    properties, following the pattern used by other components.
+   * IMPORTANT: @keyframes animations must be defined in the component's inline styles
+   * due to Shadow DOM encapsulation. However, all other CSS (including animation rules)
+   * are now in SCSS (enchanted-circular-progress.scss) using ::part() selectors.
    * 
    * @see https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM
    * @see https://lit.dev/docs/components/styles/#static-styles
@@ -174,11 +165,11 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
     const part = `circle${this.disableShrink ? ' disable-shrink' : ''}`;
     
     return html`
-      <div class="enchanted-circular-progress-root" part="root" style="${this.animationStyles}">
-        <div class="enchanted-circular-progress-spinner" part="spinner" style="width: ${this.size}px; height: ${this.size}px;">
+      <div class="enchanted-circular-progress-root" part=${CIRCULAR_PROGRESS_PARTS.ROOT} style="${this.animationStyles}">
+        <div class="enchanted-circular-progress-spinner" part=${CIRCULAR_PROGRESS_PARTS.SPINNER} style="width: ${this.size}px; height: ${this.size}px;">
           <svg
             class="enchanted-circular-progress-svg"
-            part="svg"
+            part=${CIRCULAR_PROGRESS_PARTS.SVG}
             viewBox="${this.viewBox}"
             role="progressbar"
             aria-label="${this.showLabel ? this.label : 'Loading'}"
@@ -186,7 +177,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
             <!-- Track circle (background) -->
             <circle
               class="enchanted-circular-progress-track"
-              part="track"
+              part=${CIRCULAR_PROGRESS_PARTS.TRACK}
               cx="${this.center}"
               cy="${this.center}"
               r="${this.radius}"
@@ -207,7 +198,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
             />
           </svg>
         </div>
-        ${this.showLabel ? html`<span class="enchanted-circular-progress-label" part="label">${this.label}</span>` : ''}
+        ${this.showLabel ? html`<span class="enchanted-circular-progress-label" part=${CIRCULAR_PROGRESS_PARTS.LABEL}>${this.label}</span>` : ''}
       </div>
     `;
   }

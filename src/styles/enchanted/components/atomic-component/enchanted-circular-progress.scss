@@ -17,15 +17,16 @@
 @use '../../common/themeMap.module';
 @use '../../common/typography';
 
-
+/**
+ * Enchanted Circular Progress - Design Tokens
+ * 
+ * These CSS custom properties centralize non-animated tokens (colors, spacing, typography).
+ * Note: @keyframes animations must remain in the component's inline styles due to Shadow DOM.
+ */
 @mixin enchanted-circular-progress-base-styles {
   // Color tokens
   --enchanted-circular-progress-track-color: #{map.get(themeMap.$enchantedPalette, NG200)};
   --enchanted-circular-progress-progress-color: #{map.get(themeMap.$enchantedPalette, HCLSOFTWAREBLUE06)};
-  
-  // Layout tokens
-  --enchanted-circular-progress-spinner-flex-shrink: 0;
-  --enchanted-circular-progress-track-opacity: 1;
   
   // Animation tokens
   --enchanted-circular-progress-rotate-duration: 1.4s;
@@ -38,52 +39,59 @@
 
   display: inline-block;
 
-  &::part(label) {
-    @include typography.body2;
-    color: map.get(themeMap.$enchantedPalette, BLACK60P);
-    font-style: italic;
-    white-space: nowrap;
-    animation: enchanted-label-pulse 
-      var(--enchanted-circular-progress-pulse-duration, 1.5s) 
-      var(--enchanted-circular-progress-pulse-timing, ease-in-out) 
-      infinite;
-  }
-
-  &::part(root) {
+  // Root container styles
+  &::part(circular-progress-root) {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     line-height: 1;
   }
 
-  &::part(spinner) {
+  // Spinner container styles
+  &::part(circular-progress-spinner) {
     display: inline-block;
     flex-shrink: 0;
   }
 
-  &::part(svg) {
+  // SVG element styles with animation
+  &::part(circular-progress-svg) {
     display: block;
     animation: enchanted-circular-rotate 
-      var(--enchanted-circular-progress-rotate-duration, 1.4s) 
-      var(--enchanted-circular-progress-rotate-timing, linear) 
+      var(--enchanted-circular-progress-rotate-duration) 
+      var(--enchanted-circular-progress-rotate-timing) 
       infinite;
   }
 
-  &::part(track) {
+  // Track circle styles
+  &::part(circular-progress-track) {
     opacity: 1;
   }
 
-  &::part(animated) {
+  // Progress circle with animation
+  &::part(circle) {
     stroke-dasharray: var(--stroke-dasharray-start);
     stroke-dashoffset: 0;
     animation: enchanted-circular-dash 
-      var(--enchanted-circular-progress-dash-duration, 1.4s) 
-      var(--enchanted-circular-progress-dash-timing, ease-in-out) 
+      var(--enchanted-circular-progress-dash-duration) 
+      var(--enchanted-circular-progress-dash-timing) 
       infinite;
   }
 
-  &::part(disable-shrink) { 
+  // Progress circle with disabled shrink animation
+  &::part(circle disable-shrink) {
     stroke-dasharray: var(--stroke-dasharray-shrink);
     animation: none;
+  }
+
+  // Label styles with animation
+  &::part(circular-progress-label) {
+    @include typography.body2;
+    color: map.get(themeMap.$enchantedPalette, BLACK60P);
+    font-style: italic;
+    white-space: nowrap;
+    animation: enchanted-label-pulse 
+      var(--enchanted-circular-progress-pulse-duration) 
+      var(--enchanted-circular-progress-pulse-timing) 
+      infinite;
   }
 }
