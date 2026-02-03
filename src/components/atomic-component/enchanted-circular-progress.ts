@@ -38,16 +38,10 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
    * 
    * 2. **Shadow Boundary Limitation**: External stylesheets (even with ::part() selectors) 
    *    cannot penetrate the Shadow DOM boundary to apply animations to internal elements.
-   *    The ::part() mechanism only allows styling of exposed parts from outside, not animating them.
    * 
-   * 3. **Animation Timing Critical**: The indeterminate progress animation requires precise
-   *    coordination between SVG rotation and stroke-dash animations. These must be encapsulated
-   *    within the component's Shadow DOM for reliable cross-browser behavior.
-   * 
-   * 4. **Performance**: Inline styles in Shadow DOM are more performant for animated components
-   *    as they don't require style recalculation across the Shadow boundary.
-   * 
-   * This pattern is consistent with Material UI and other animation-heavy web component libraries.
+   * 3. **Design Tokens Centralized**: Non-animated tokens (colors, spacing, typography) are
+   *    now centralized in SCSS (enchanted-circular-progress.scss) and exposed via CSS custom
+   *    properties, following the pattern used by other components.
    * 
    * @see https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM
    * @see https://lit.dev/docs/components/styles/#static-styles
@@ -57,43 +51,27 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
       display: inline-block;
     }
 
-    .enchanted-circular-progress-root {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 1;
-    }
-
-    .enchanted-circular-progress-spinner {
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
     .enchanted-circular-progress-svg {
-      display: block;
-      animation: enchanted-circular-rotate 1.4s linear infinite;
+      animation: enchanted-circular-rotate 
+        var(--enchanted-circular-progress-rotate-duration, 1.4s) 
+        var(--enchanted-circular-progress-rotate-timing, linear) 
+        infinite;
     }
 
     .enchanted-circular-progress-label {
-      color: rgba(0, 0, 0, 0.60);
-      font-feature-settings: 'liga' off, 'clig' off;
-      font-family: Inter, sans-serif;
-      font-size: 12px;
-      font-style: italic;
-      font-weight: 400;
-      line-height: 16px;
-      white-space: nowrap;
-      animation: enchanted-label-pulse 1.5s ease-in-out infinite;
-    }
-
-    .enchanted-circular-progress-track {
-      opacity: 1;
+      animation: enchanted-label-pulse 
+        var(--enchanted-circular-progress-pulse-duration, 1.5s) 
+        var(--enchanted-circular-progress-pulse-timing, ease-in-out) 
+        infinite;
     }
 
     .enchanted-circular-progress-circle {
       stroke-dasharray: var(--stroke-dasharray-start);
       stroke-dashoffset: 0;
-      animation: enchanted-circular-dash 1.4s ease-in-out infinite;
+      animation: enchanted-circular-dash 
+        var(--enchanted-circular-progress-dash-duration, 1.4s) 
+        var(--enchanted-circular-progress-dash-timing, ease-in-out) 
+        infinite;
     }
 
     .enchanted-circular-progress-circle.disable-shrink {
@@ -130,7 +108,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
         opacity: 1;
       }
       50% {
-        opacity: 0.5;
+        opacity: var(--enchanted-circular-progress-pulse-opacity-min, 0.5);
       }
     }
   `;
@@ -169,9 +147,9 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
 
   /**
    * Label text to display next to the progress indicator
-   * @default 'Thinking'
+   * @default ''
    */
-  @property({ type: String }) label = 'Thinking...';
+  @property({ type: String }) label = '';
 
   /**
    * Show or hide the label text
@@ -228,10 +206,11 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
     const circleClasses = `enchanted-circular-progress-circle${this.disableShrink ? ' disable-shrink' : ''}`;
     
     return html`
-      <div class="enchanted-circular-progress-root" style="${this.animationStyles}">
-        <div class="enchanted-circular-progress-spinner" style="width: ${this.size}px; height: ${this.size}px;">
+      <div class="enchanted-circular-progress-root" part="root" style="${this.animationStyles}">
+        <div class="enchanted-circular-progress-spinner" part="spinner" style="width: ${this.size}px; height: ${this.size}px;">
           <svg
             class="enchanted-circular-progress-svg"
+            part="svg"
             viewBox="${this.viewBox}"
             role="progressbar"
             aria-label="${this.showLabel ? this.label : 'Loading'}"
@@ -239,6 +218,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
             <!-- Track circle (background) -->
             <circle
               class="enchanted-circular-progress-track"
+              part="track"
               cx="${this.center}"
               cy="${this.center}"
               r="${this.radius}"
@@ -259,7 +239,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
             />
           </svg>
         </div>
-        ${this.showLabel ? html`<span class="enchanted-circular-progress-label">${this.label}</span>` : ''}
+        ${this.showLabel ? html`<span class="enchanted-circular-progress-label" part="label">${this.label}</span>` : ''}
       </div>
     `;
   }
