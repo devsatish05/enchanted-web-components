@@ -1,5 +1,5 @@
 /* ======================================================================== *
- * Copyright 2025 HCL America Inc.                                          *
+ * Copyright 2025, 2026 HCL America Inc.                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
  * You may obtain a copy of the License at                                  *
@@ -181,10 +181,10 @@ describe('EnchantedCircularProgress component testing', () => {
     let svgElement = await component.$('>>>svg').getElement();
     let progressCircle = await svgElement.$('>>>circle[part*="circle"]').getElement();
     let partValue = await progressCircle.getAttribute('part');
-    await expect(partValue).toContain('disable-shrink');
+    await expect(partValue).toBe('circle-disable-shrink');
   });
 
-  it('EnchantedCircularProgress - should render component without disable-shrink class by default', async () => {
+  it('EnchantedCircularProgress - should render component without disable-shrink part by default', async () => {
     render(
       html`
         <enchanted-circular-progress></enchanted-circular-progress>
@@ -197,7 +197,6 @@ describe('EnchantedCircularProgress component testing', () => {
     let svgElement = await component.$('>>>svg').getElement();
     let progressCircle = await svgElement.$('>>>circle[part*="circle"]').getElement();
     let partValue = await progressCircle.getAttribute('part');
-    await expect(partValue).not.toContain('disable-shrink');
     await expect(partValue).toBe('circle');
   });
 
@@ -238,7 +237,7 @@ describe('EnchantedCircularProgress component testing', () => {
     await expect(progressCircle).toHaveAttribute('stroke', '#FF6600');
     await expect(progressCircle).toHaveAttribute('stroke-width', '6');
     let partValue = await progressCircle.getAttribute('part');
-    await expect(partValue).toContain('disable-shrink');
+    await expect(partValue).toBe('circle-disable-shrink');
   });
 
   it('EnchantedCircularProgress - should update properties dynamically', async () => {

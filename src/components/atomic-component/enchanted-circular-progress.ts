@@ -1,5 +1,5 @@
 /* ======================================================================== *
- * Copyright 2025 HCL America Inc.                                          *
+ * Copyright 2025, 2026 HCL America Inc.                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
  * You may obtain a copy of the License at                                  *
@@ -162,7 +162,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
   }
 
   render() {
-    const part = `circle${this.disableShrink ? ' disable-shrink' : ''}`;
+    const part = this.disableShrink ? 'circle-disable-shrink' : 'circle';
     
     return html`
       <div part=${CIRCULAR_PROGRESS_PARTS.ROOT} style="${this.animationStyles}">

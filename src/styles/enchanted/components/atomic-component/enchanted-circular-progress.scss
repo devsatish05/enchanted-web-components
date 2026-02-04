@@ -78,7 +78,7 @@
   }
 
   // Progress circle with disabled shrink animation
-  &::part(circle disable-shrink) {
+  &::part(circle-disable-shrink) {
     stroke-dasharray: var(--stroke-dasharray-shrink);
     animation: none;
   }
