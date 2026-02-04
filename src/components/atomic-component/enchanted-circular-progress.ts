@@ -162,7 +162,7 @@ export class EnchantedCircularProgress extends EnchantedAcBaseElement {
   }
 
   render() {
-    const part = this.disableShrink ? 'circle-disable-shrink' : 'circle';
+    const part = this.disableShrink ? CIRCULAR_PROGRESS_PARTS.CIRCLE_DISABLE_SHRINK : CIRCULAR_PROGRESS_PARTS.CIRCLE;
     
     return html`
       <div part=${CIRCULAR_PROGRESS_PARTS.ROOT} style="${this.animationStyles}">
