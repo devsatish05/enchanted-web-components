@@ -4,6 +4,8 @@
 
 ### Added
 
+- added automated WCAG 2.1 AA accessibility audits via @storybook/addon-a11y and Chromatic CI.
+
 ### Fixed
 
 ### Changed
